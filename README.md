@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+🛠️ Step-by-Step: Setting Up the "Unknown" Project
+Phase 1: The "Clean House" Setup
+Before you write any logic, make sure the environment is professional.
 
-## Getting Started
+Clean the Boilerplate: \* Remove the default Next.js styling in globals.css (keep the Tailwind directives).
 
-First, run the development server:
+Delete the placeholder images in /public.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Clean up page.tsx to just show a "Hello World" or a "Project Loading" state.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Configure Prettier & ESLint:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Ensure your code auto-formats on save. This is crucial for TypeScript.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Strict Mode Check:
 
-## Learn More
+Go to tsconfig.json and ensure "strict": true is on. No shortcuts!
 
-To learn more about Next.js, take a look at the following resources:
+Phase 2: Structural Foundation
+Create your folder architecture now so you don't have a mess later.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Create Core Folders: Inside /src or /app, create:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+/components (For your UI buttons, inputs, etc.)
 
-## Deploy on Vercel
+/hooks (For custom React hooks)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+/types (For your TypeScript interfaces/types)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+/lib (For utility functions like cn for Tailwind)
+
+Layout Design: \* Set up your layout.tsx with a basic Navbar and Footer placeholder. This makes it feel like a real app immediately.
+
+Phase 3: The "Mock" Phase (Type Prep)
+Since you are studying TypeScript Mastery at 06:30 PM, use this project as your playground.
+
+Define a "User" Type: \* Create a file types/index.ts and define what a User or a Project looks like.
+
+Setup a Mock API: \* Create a simple local JSON file or a mock fetch function to practice getting data into your React components using Types.
+
+Phase 4: The "Idea" Hunt
+While you are doing your 09:00 AM Application Blitz, look at the websites of the companies you are applying to.
+
+Identify a Gap: Does a company have a bad UI? A slow search bar?
+
+The "Clone" Strategy: If you still don't know what to make, pick a small feature from a site you like (e.g., "The Spotify Playlist Creator" or "A Kanban Board") and start building just that feature.
+
+Phase 5: Deployment
+Push to GitHub: Do this immediately.
+
+Connect to Vercel: Get that "Automatic Deployment" set up.
+
+Why? Because seeing a live URL (even if it's empty) is a massive psychological boost.
