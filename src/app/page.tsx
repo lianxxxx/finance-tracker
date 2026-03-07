@@ -1,3 +1,9 @@
+import MobileNav from "@/components/dashboard/MobileNav";
+
 export default function Home() {
-  return <div></div>;
+  return (
+    <div>
+      <MobileNav />
+    </div>
+  );
 }
