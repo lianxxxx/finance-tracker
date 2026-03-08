@@ -1,0 +1,2 @@
+guammit  ng router ng next
+tas ts na rin agad sa mobilenav
