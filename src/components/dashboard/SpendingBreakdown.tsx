@@ -52,7 +52,7 @@ export default function SpendingBreakdown() {
             ))}
           </Pie>
           <Tooltip
-            formatter={(value: number) => [`₱${value.toLocaleString()}`, ""]}
+            formatter={(value) => [`₱${Number(value).toLocaleString()}`, ""]}
             contentStyle={{
               borderRadius: "12px",
               border: "1px solid #e2e8f0",

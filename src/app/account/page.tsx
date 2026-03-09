@@ -1,8 +1,9 @@
+import React from "react";
 import { mockAccounts } from "@/lib/mockData";
-import { TbWallet, TbBuildingBank, TbCreditCard, TbCash } from "react-icons/tb";
+import { TbBuildingBank, TbCreditCard, TbCash } from "react-icons/tb";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 
-const typeIcon: Record<string, JSX.Element> = {
+const typeIcon: Record<string, React.ReactElement> = {
   cash: <TbCash size={22} />,
   bank: <TbBuildingBank size={22} />,
   ewallet: <RiMoneyDollarCircleLine size={22} />,

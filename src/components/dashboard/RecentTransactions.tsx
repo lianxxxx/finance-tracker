@@ -9,7 +9,7 @@ import {
   TbTag,
 } from "react-icons/tb";
 
-const categoryIcon: Record<string, JSX.Element> = {
+const categoryIcon: Record<string, React.ReactElement> = {
   Food: <TbShoppingCart size={18} />,
   Salary: <TbCash size={18} />,
   Freelance: <TbCash size={18} />,

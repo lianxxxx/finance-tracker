@@ -16,7 +16,7 @@ import {
 } from "react-icons/tb";
 import AddTransactionModal from "@/components/modals/AddTransactionModal";
 
-const categoryIcon: Record<string, JSX.Element> = {
+const categoryIcon: Record<string, React.ReactElement> = {
   Food: <TbShoppingCart size={16} />,
   Salary: <TbCash size={16} />,
   Freelance: <TbCash size={16} />,
