@@ -2,23 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { RxDashboard } from "react-icons/rx";
-import { HiOutlineArrowsRightLeft } from "react-icons/hi2";
-import { PiWallet } from "react-icons/pi";
-import { GoGoal } from "react-icons/go";
 import { LuSettings } from "react-icons/lu";
 import { FaUserCircle } from "react-icons/fa";
-
-const navItems = [
-  { label: "Dashboard", href: "/", icon: RxDashboard },
-  {
-    label: "Transactions",
-    href: "/transactions",
-    icon: HiOutlineArrowsRightLeft,
-  },
-  { label: "Accounts", href: "/accounts", icon: PiWallet },
-  { label: "Goals", href: "/goals", icon: GoGoal },
-];
+import { navItems } from "@/lib/navItems";
 
 export default function DesktopSidebar() {
   const pathname = usePathname();
