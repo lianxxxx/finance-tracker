@@ -101,3 +101,46 @@ export const mockAccounts: Account[] = [
   { id: "5", name: "BDO Savings", type: "bank", balance: 18000 },
   { id: "6", name: "Credit Card", type: "credit", balance: -8500 },
 ];
+export interface Goal {
+  id: string;
+  title: string;
+  category: "travel" | "emergency" | "gadget" | "education" | "other";
+  targetAmount: number;
+  currentAmount: number;
+  deadline: string;
+}
+
+export const mockGoals: Goal[] = [
+  {
+    id: "1",
+    title: "Emergency Fund",
+    category: "emergency",
+    targetAmount: 50000,
+    currentAmount: 25000,
+    deadline: "2026-06-30",
+  },
+  {
+    id: "2",
+    title: "Japan Trip",
+    category: "travel",
+    targetAmount: 80000,
+    currentAmount: 15000,
+    deadline: "2026-12-31",
+  },
+  {
+    id: "3",
+    title: "New Laptop",
+    category: "gadget",
+    targetAmount: 60000,
+    currentAmount: 42000,
+    deadline: "2026-05-01",
+  },
+  {
+    id: "4",
+    title: "Online Course",
+    category: "education",
+    targetAmount: 15000,
+    currentAmount: 15000,
+    deadline: "2026-03-31",
+  },
+];
