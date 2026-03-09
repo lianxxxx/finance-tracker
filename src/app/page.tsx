@@ -1,4 +1,5 @@
 import IncomeExpenseChart from "@/components/dashboard/IncomeExpenseChart";
+import RecentTransactions from "@/components/dashboard/RecentTransactions";
 import SpendingBreakdown from "@/components/dashboard/SpendingBreakdown";
 import StatsCards from "@/components/dashboard/StatsCards";
 
@@ -20,6 +21,7 @@ export default function Home() {
           <SpendingBreakdown />
         </div>
       </div>
+      <RecentTransactions />
     </div>
   );
 }

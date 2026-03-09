@@ -85,3 +85,19 @@ export const totalExpenses = mockTransactions
   .reduce((sum, t) => sum + t.amount, 0);
 
 export const totalBalance = totalIncome - totalExpenses;
+
+export interface Account {
+  id: string;
+  name: string;
+  type: "bank" | "ewallet" | "cash" | "credit";
+  balance: number;
+}
+
+export const mockAccounts: Account[] = [
+  { id: "1", name: "Cash", type: "cash", balance: 5000 },
+  { id: "2", name: "BPI Savings", type: "bank", balance: 25000 },
+  { id: "3", name: "GCash", type: "ewallet", balance: 3500 },
+  { id: "4", name: "Maya", type: "ewallet", balance: 1200 },
+  { id: "5", name: "BDO Savings", type: "bank", balance: 18000 },
+  { id: "6", name: "Credit Card", type: "credit", balance: -8500 },
+];
