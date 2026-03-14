@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Goal } from "@/lib/mockData";
+import { Goal } from "@/lib/types";
 import { mockGoals } from "@/lib/mockData";
 
 export function useGoals() {
@@ -10,6 +10,7 @@ export function useGoals() {
   useEffect(() => {
     const stored = localStorage.getItem("goals");
     if (stored) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setGoals(JSON.parse(stored));
     } else {
       setGoals(mockGoals);

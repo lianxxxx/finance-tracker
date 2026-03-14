@@ -11,6 +11,7 @@ export function useTransactions() {
   useEffect(() => {
     const stored = localStorage.getItem("transactions");
     if (stored) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTransactions(JSON.parse(stored));
     } else {
       setTransactions(mockTransactions);

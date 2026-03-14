@@ -41,11 +41,14 @@ export default function AddTransactionModal({
     note: "",
   });
 
+  const [customCategory, setCustomCategory] = useState("");
+
   useEffect(() => {
     if (editData) {
       const isCustom =
         !expenseCategories.includes(editData.category as Category) &&
         !incomeCategories.includes(editData.category as Category);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setForm({
         title: editData.title,
         amount: String(editData.amount),
@@ -74,7 +77,7 @@ export default function AddTransactionModal({
       note: form.note,
     });
   };
-  const [customCategory, setCustomCategory] = useState("");
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />

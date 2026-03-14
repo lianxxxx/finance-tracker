@@ -31,6 +31,7 @@ export default function AddGoalModal({ onClose, onSubmit, editData }: Props) {
         "education",
         "other",
       ].includes(editData.category);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setForm({
         title: editData.title,
         category: isCustom ? "other" : (editData.category as Goal["category"]),

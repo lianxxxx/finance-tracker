@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useGoals } from "@/hooks/useGoals";
-import { Goal } from "@/lib/mockData";
+import { Goal } from "@/lib/types";
 import AddGoalModal from "@/components/modals/AddGoalModal";
 import React from "react";
 import {
