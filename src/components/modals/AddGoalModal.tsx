@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Goal } from "@/lib/mockData";
 import { TbX } from "react-icons/tb";
 
@@ -8,34 +8,61 @@ const categories = ["travel", "emergency", "gadget", "education", "other"];
 
 interface Props {
   onClose: () => void;
+  onSubmit: (data: Omit<Goal, "id">) => void;
+  editData?: Goal | null;
 }
 
-export default function AddGoalModal({ onClose }: Props) {
+export default function AddGoalModal({ onClose, onSubmit, editData }: Props) {
   const [form, setForm] = useState({
     title: "",
-    category: "other" as Goal["category"],
+    category: "travel" as Goal["category"], // ← dito palitan
     targetAmount: "",
     currentAmount: "",
     deadline: "",
   });
+  const [customCategory, setCustomCategory] = useState("");
+
+  useEffect(() => {
+    if (editData) {
+      const isCustom = ![
+        "travel",
+        "emergency",
+        "gadget",
+        "education",
+        "other",
+      ].includes(editData.category);
+      setForm({
+        title: editData.title,
+        category: isCustom ? "other" : (editData.category as Goal["category"]),
+        targetAmount: String(editData.targetAmount),
+        currentAmount: String(editData.currentAmount),
+        deadline: editData.deadline,
+      });
+      if (isCustom) setCustomCategory(editData.category);
+    }
+  }, [editData]);
 
   const handleSubmit = () => {
     if (!form.title || !form.targetAmount) return;
-    console.log("New goal:", form);
-    onClose();
+    if (form.category === "other" && !customCategory) return;
+    onSubmit({
+      title: form.title,
+      category: (form.category === "other"
+        ? customCategory
+        : form.category) as Goal["category"],
+      targetAmount: Number(form.targetAmount),
+      currentAmount: Number(form.currentAmount),
+      deadline: form.deadline,
+    });
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-      {/* Backdrop */}
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />
-
-      {/* Modal */}
       <div className="relative bg-white dark:bg-slate-900 rounded-2xl p-6 w-full max-w-md border border-slate-200 dark:border-slate-800 shadow-xl">
-        {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-base font-semibold text-slate-900 dark:text-slate-50">
-            Add Goal
+            {editData ? "Edit Goal" : "Add Goal"}
           </h2>
           <button
             onClick={onClose}
@@ -45,7 +72,6 @@ export default function AddGoalModal({ onClose }: Props) {
           </button>
         </div>
 
-        {/* Fields */}
         <div className="flex flex-col gap-3">
           <input
             type="text"
@@ -54,19 +80,45 @@ export default function AddGoalModal({ onClose }: Props) {
             onChange={(e) => setForm({ ...form, title: e.target.value })}
             className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent text-sm text-slate-900 dark:text-slate-50 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <select
-            value={form.category}
-            onChange={(e) =>
-              setForm({ ...form, category: e.target.value as Goal["category"] })
-            }
-            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 capitalize"
-          >
-            {categories.map((c) => (
-              <option key={c} value={c} className="capitalize">
-                {c}
-              </option>
-            ))}
-          </select>
+
+          {form.category === "other" ? (
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Type your category"
+                value={customCategory}
+                onChange={(e) => setCustomCategory(e.target.value)}
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent text-sm text-slate-900 dark:text-slate-50 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button
+                onClick={() => {
+                  setForm({ ...form, category: "travel" });
+                  setCustomCategory("");
+                }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs"
+              >
+                ✕
+              </button>
+            </div>
+          ) : (
+            <select
+              value={form.category}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  category: e.target.value as Goal["category"],
+                })
+              }
+              className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 capitalize"
+            >
+              {categories.map((c) => (
+                <option key={c} value={c} className="capitalize">
+                  {c}
+                </option>
+              ))}
+            </select>
+          )}
+
           <input
             type="number"
             placeholder="Target Amount (₱)"
@@ -91,12 +143,11 @@ export default function AddGoalModal({ onClose }: Props) {
           />
         </div>
 
-        {/* Submit */}
         <button
           onClick={handleSubmit}
           className="w-full mt-4 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2.5 rounded-xl transition-colors"
         >
-          Add Goal
+          {editData ? "Save Changes" : "Add Goal"}
         </button>
       </div>
     </div>

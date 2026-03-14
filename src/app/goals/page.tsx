@@ -1,14 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import { useGoals } from "@/hooks/useGoals";
+import { Goal } from "@/lib/mockData";
 import AddGoalModal from "@/components/modals/AddGoalModal";
-import { mockGoals } from "@/lib/mockData";
+import React from "react";
 import {
   TbPlaneTilt,
   TbShieldCheck,
   TbDeviceLaptop,
   TbBook,
   TbTargetArrow,
+  TbPencil,
+  TbTrash,
 } from "react-icons/tb";
 
 const categoryIcon: Record<string, React.ReactElement> = {
@@ -35,13 +39,13 @@ const progressColor: Record<string, string> = {
   other: "bg-slate-500",
 };
 
-import React from "react";
-
 export default function GoalsPage() {
   const [showModal, setShowModal] = useState(false);
+  const [editTarget, setEditTarget] = useState<Goal | null>(null);
+  const { goals, addGoal, deleteGoal, editGoal } = useGoals();
+
   return (
     <div>
-      {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
@@ -52,16 +56,18 @@ export default function GoalsPage() {
           </p>
         </div>
         <button
-          onClick={() => setShowModal(true)}
+          onClick={() => {
+            setEditTarget(null);
+            setShowModal(true);
+          }}
           className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-colors"
         >
           + Add Goal
         </button>
       </div>
 
-      {/* Goals Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {mockGoals.map((goal) => {
+        {goals.map((goal) => {
           const progress = Math.min(
             (goal.currentAmount / goal.targetAmount) * 100,
             100,
@@ -75,9 +81,8 @@ export default function GoalsPage() {
           return (
             <div
               key={goal.id}
-              className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800"
+              className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 group"
             >
-              {/* Top */}
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div
@@ -94,18 +99,36 @@ export default function GoalsPage() {
                     </p>
                   </div>
                 </div>
-                {isComplete ? (
-                  <span className="text-xs font-medium bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500 px-2.5 py-1 rounded-full">
-                    Completed! 🎉
-                  </span>
-                ) : (
-                  <span className="text-xs text-slate-400">
-                    {daysLeft > 0 ? `${daysLeft} days left` : "Overdue"}
-                  </span>
-                )}
+                <div className="flex items-center gap-2">
+                  {isComplete ? (
+                    <span className="text-xs font-medium bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500 px-2.5 py-1 rounded-full">
+                      Completed! 🎉
+                    </span>
+                  ) : (
+                    <span className="text-xs text-slate-400">
+                      {daysLeft > 0 ? `${daysLeft} days left` : "Overdue"}
+                    </span>
+                  )}
+                  <div className="hidden group-hover:flex items-center gap-1">
+                    <button
+                      onClick={() => {
+                        setEditTarget(goal);
+                        setShowModal(true);
+                      }}
+                      className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-blue-500 transition-colors"
+                    >
+                      <TbPencil size={15} />
+                    </button>
+                    <button
+                      onClick={() => deleteGoal(goal.id)}
+                      className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-red-500 transition-colors"
+                    >
+                      <TbTrash size={15} />
+                    </button>
+                  </div>
+                </div>
               </div>
 
-              {/* Progress Bar */}
               <div className="mb-3">
                 <div className="flex justify-between mb-1.5">
                   <p className="text-xs text-slate-400">Progress</p>
@@ -121,7 +144,6 @@ export default function GoalsPage() {
                 </div>
               </div>
 
-              {/* Amounts */}
               <div className="flex items-center justify-between">
                 <p className="text-xs text-slate-400">
                   ₱{goal.currentAmount.toLocaleString()} saved
@@ -134,7 +156,25 @@ export default function GoalsPage() {
           );
         })}
       </div>
-      {showModal && <AddGoalModal onClose={() => setShowModal(false)} />}
+
+      {showModal && (
+        <AddGoalModal
+          onClose={() => {
+            setShowModal(false);
+            setEditTarget(null);
+          }}
+          onSubmit={(data) => {
+            if (editTarget) {
+              editGoal(editTarget.id, data);
+            } else {
+              addGoal(data);
+            }
+            setShowModal(false);
+            setEditTarget(null);
+          }}
+          editData={editTarget}
+        />
+      )}
     </div>
   );
 }
