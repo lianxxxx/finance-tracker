@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Goal } from "@/lib/mockData";
+import { Goal } from "@/lib/types";
 import { TbX } from "react-icons/tb";
 
 const categories = ["travel", "emergency", "gadget", "education", "other"];

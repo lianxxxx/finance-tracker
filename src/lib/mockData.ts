@@ -1,4 +1,4 @@
-import { Transaction, MonthlyData } from "./types";
+import { Transaction, MonthlyData, Account, Goal } from "./types";
 
 export const mockTransactions: Transaction[] = [
   {
@@ -86,13 +86,6 @@ export const totalExpenses = mockTransactions
 
 export const totalBalance = totalIncome - totalExpenses;
 
-export interface Account {
-  id: string;
-  name: string;
-  type: "bank" | "ewallet" | "cash" | "credit";
-  balance: number;
-}
-
 export const mockAccounts: Account[] = [
   { id: "1", name: "Cash", type: "cash", balance: 5000 },
   { id: "2", name: "BPI Savings", type: "bank", balance: 25000 },
@@ -101,14 +94,6 @@ export const mockAccounts: Account[] = [
   { id: "5", name: "BDO Savings", type: "bank", balance: 18000 },
   { id: "6", name: "Credit Card", type: "credit", balance: -8500 },
 ];
-export interface Goal {
-  id: string;
-  title: string;
-  category: "travel" | "emergency" | "gadget" | "education" | "other";
-  targetAmount: number;
-  currentAmount: number;
-  deadline: string;
-}
 
 export const mockGoals: Goal[] = [
   {

@@ -27,3 +27,19 @@ export interface MonthlyData {
   income: number;
   expenses: number;
 }
+
+export interface Account {
+  id: string;
+  name: string;
+  type: "bank" | "ewallet" | "cash" | "credit";
+  balance: number;
+}
+
+export interface Goal {
+  id: string;
+  title: string;
+  category: "travel" | "emergency" | "gadget" | "education" | "other" | string;
+  targetAmount: number;
+  currentAmount: number;
+  deadline: string;
+}
