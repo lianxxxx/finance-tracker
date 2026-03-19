@@ -8,7 +8,7 @@ import {
   TbTag,
 } from "react-icons/tb";
 import React from "react";
-
+import Link from "next/link";
 const categoryIcon: Record<string, React.ReactElement> = {
   Food: <TbShoppingCart size={18} />,
   Salary: <TbCash size={18} />,
@@ -44,9 +44,12 @@ export default function RecentTransactions({ transactions }: Props) {
         <h2 className="text-base font-semibold text-slate-900 dark:text-slate-50">
           Recent Transactions
         </h2>
-        <button className="text-xs text-blue-500 hover:text-blue-600 font-medium">
+        <Link
+          href="/transactions"
+          className="text-xs text-blue-500 hover:text-blue-600 font-medium"
+        >
           View all
-        </button>
+        </Link>
       </div>
 
       <div className="grid grid-cols-3 px-4 mb-2">
