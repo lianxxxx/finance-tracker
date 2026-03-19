@@ -1,6 +1,6 @@
 "use client";
 
-import { mockTransactions } from "@/lib/mockData";
+import { Transaction } from "@/lib/types";
 import {
   PieChart,
   Pie,
@@ -19,19 +19,23 @@ const COLORS = [
   "#06b6d4",
 ];
 
-const categoryData = Object.entries(
-  mockTransactions
-    .filter((t) => t.type === "expense")
-    .reduce(
-      (acc, t) => {
-        acc[t.category] = (acc[t.category] || 0) + t.amount;
-        return acc;
-      },
-      {} as Record<string, number>,
-    ),
-).map(([name, value]) => ({ name, value }));
+interface Props {
+  transactions: Transaction[];
+}
 
-export default function SpendingBreakdown() {
+export default function SpendingBreakdown({ transactions }: Props) {
+  const categoryData = Object.entries(
+    transactions
+      .filter((t) => t.type === "expense")
+      .reduce(
+        (acc, t) => {
+          acc[t.category] = (acc[t.category] || 0) + t.amount;
+          return acc;
+        },
+        {} as Record<string, number>,
+      ),
+  ).map(([name, value]) => ({ name, value }));
+
   return (
     <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 mb-6">
       <h2 className="text-base font-semibold text-slate-900 dark:text-slate-50 mb-6">

@@ -1,4 +1,3 @@
-import { mockTransactions } from "@/lib/mockData";
 import { Transaction } from "@/lib/types";
 import {
   TbShoppingCart,
@@ -8,6 +7,7 @@ import {
   TbCar,
   TbTag,
 } from "react-icons/tb";
+import React from "react";
 
 const categoryIcon: Record<string, React.ReactElement> = {
   Food: <TbShoppingCart size={18} />,
@@ -31,8 +31,12 @@ const categoryColor: Record<string, string> = {
   Shopping: "bg-pink-50 dark:bg-pink-500/10 text-pink-500",
 };
 
-export default function RecentTransactions() {
-  const recent = mockTransactions.slice(0, 5);
+interface Props {
+  transactions: Transaction[];
+}
+
+export default function RecentTransactions({ transactions }: Props) {
+  const recent = transactions.slice(0, 5);
 
   return (
     <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 mt-4">
@@ -45,14 +49,12 @@ export default function RecentTransactions() {
         </button>
       </div>
 
-      {/* Header */}
       <div className="grid grid-cols-3 px-4 mb-2">
         <p className="text-xs text-slate-400">Name</p>
         <p className="text-xs text-slate-400 text-center">Date</p>
         <p className="text-xs text-slate-400 text-right">Amount</p>
       </div>
 
-      {/* Rows */}
       <div className="flex flex-col gap-2">
         {recent.map((t: Transaction) => (
           <div

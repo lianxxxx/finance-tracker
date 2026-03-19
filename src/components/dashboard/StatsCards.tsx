@@ -1,10 +1,23 @@
-import { totalBalance, totalIncome, totalExpenses } from "@/lib/mockData";
+import { Transaction } from "@/lib/types";
 import { TbTrendingUp, TbTrendingDown, TbWallet } from "react-icons/tb";
 
-export default function StatsCards() {
+interface Props {
+  transactions: Transaction[];
+}
+
+export default function StatsCards({ transactions }: Props) {
+  const totalIncome = transactions
+    .filter((t) => t.type === "income")
+    .reduce((sum, t) => sum + t.amount, 0);
+
+  const totalExpenses = transactions
+    .filter((t) => t.type === "expense")
+    .reduce((sum, t) => sum + t.amount, 0);
+
+  const totalBalance = totalIncome - totalExpenses;
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
-      {/* Total Balance */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
       <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800">
         <div className="flex items-center justify-between mb-3">
           <p className="text-sm text-slate-500 dark:text-slate-400">
@@ -20,7 +33,6 @@ export default function StatsCards() {
         <p className="text-xs text-emerald-500 mt-1">↑ +12% this month</p>
       </div>
 
-      {/* Monthly Income */}
       <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800">
         <div className="flex items-center justify-between mb-3">
           <p className="text-sm text-slate-500 dark:text-slate-400">
@@ -36,7 +48,6 @@ export default function StatsCards() {
         <p className="text-xs text-emerald-500 mt-1">↑ +8% vs last month</p>
       </div>
 
-      {/* Monthly Expenses */}
       <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800">
         <div className="flex items-center justify-between mb-3">
           <p className="text-sm text-slate-500 dark:text-slate-400">
