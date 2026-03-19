@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Transaction } from "@/lib/types";
 import { useTransactions } from "@/hooks/useTransactions";
 import AddTransactionModal from "@/components/modals/AddTransactionModal";
+import React from "react";
 import {
   TbShoppingCart,
   TbCash,
@@ -14,6 +15,7 @@ import {
   TbPlus,
   TbPencil,
   TbTrash,
+  TbDots,
 } from "react-icons/tb";
 
 const categoryIcon: Record<string, React.ReactElement> = {
@@ -38,7 +40,53 @@ const categoryColor: Record<string, string> = {
   Shopping: "bg-pink-50 dark:bg-pink-500/10 text-pink-500",
 };
 
-import React from "react";
+function ActionMenu({
+  onEdit,
+  onDelete,
+}: {
+  onEdit: () => void;
+  onDelete: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setOpen(!open)}
+        className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition-colors"
+      >
+        <TbDots size={16} />
+      </button>
+      {open && (
+        <>
+          <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
+          <div className="absolute right-0 top-8 z-20 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-lg overflow-hidden w-32">
+            <button
+              onClick={() => {
+                onEdit();
+                setOpen(false);
+              }}
+              className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"
+            >
+              <TbPencil size={15} />
+              Edit
+            </button>
+            <button
+              onClick={() => {
+                onDelete();
+                setOpen(false);
+              }}
+              className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10"
+            >
+              <TbTrash size={15} />
+              Delete
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
 
 export default function TransactionsPage() {
   const [showModal, setShowModal] = useState(false);
@@ -72,64 +120,75 @@ export default function TransactionsPage() {
 
       {/* Table */}
       <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-        <div className="grid grid-cols-4 px-6 py-4 border-b border-slate-200 dark:border-slate-800">
+        {/* Header */}
+        <div className="grid grid-cols-[1fr_100px_48px] sm:grid-cols-[1fr_1fr_1fr_100px_48px] px-6 py-4 border-b border-slate-200 dark:border-slate-800">
           <p className="text-xs font-medium text-slate-400">Name</p>
-          <p className="text-xs font-medium text-slate-400">Category</p>
-          <p className="text-xs font-medium text-slate-400">Date</p>
+          <p className="text-xs font-medium text-slate-400 hidden sm:block">
+            Category
+          </p>
+          <p className="text-xs font-medium text-slate-400 hidden sm:block">
+            Date
+          </p>
+          <p className="text-xs font-medium text-slate-400 text-left">Amount</p>
           <p className="text-xs font-medium text-slate-400 text-right">
-            Amount
+            Actions
           </p>
         </div>
 
+        {/* Rows */}
         <div className="divide-y divide-slate-100 dark:divide-slate-800">
-          {transactions.map((t: Transaction) => (
+          {transactions.map((t: Transaction, index: number) => (
             <div
               key={t.id}
-              className="grid grid-cols-4 items-center px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group"
+              className="grid grid-cols-[1fr_100px_48px] sm:grid-cols-[1fr_1fr_1fr_100px_48px] items-center px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
             >
-              <div className="flex items-center gap-3">
-                <div
-                  className={`w-8 h-8 rounded-lg flex items-center justify-center ${categoryColor[t.category] || "bg-slate-100 text-slate-500"}`}
-                >
-                  {categoryIcon[t.category] || <TbTag size={16} />}
+              {/* Name */}
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs font-semibold text-slate-600 w-4 text-right">
+                    {index + 1}.
+                  </span>
+                  <div
+                    className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${categoryColor[t.category] || "bg-slate-100 text-slate-500"}`}
+                  >
+                    {categoryIcon[t.category] || <TbTag size={16} />}
+                  </div>
                 </div>
-                <p className="text-sm font-medium text-slate-900 dark:text-slate-50">
+                <p className="text-sm font-medium text-slate-900 dark:text-slate-50 truncate">
                   {t.title}
                 </p>
               </div>
-              <p className="text-sm text-slate-500 dark:text-slate-400">
+
+              {/* Category */}
+              <p className="text-sm text-slate-500 dark:text-slate-400 truncate hidden sm:block">
                 {t.category}
               </p>
-              <p className="text-sm text-slate-500 dark:text-slate-400">
+
+              {/* Date */}
+              <p className="text-sm text-slate-500 dark:text-slate-400 hidden sm:block">
                 {new Date(t.date).toLocaleDateString("en-PH", {
                   month: "short",
                   day: "numeric",
                   year: "numeric",
                 })}
               </p>
-              <div className="flex items-center justify-end gap-3">
-                <p
-                  className={`text-sm font-semibold ${t.type === "income" ? "text-emerald-500" : "text-red-400"}`}
-                >
-                  {t.type === "income" ? "+" : "-"}₱{t.amount.toLocaleString()}
-                </p>
-                <div className="hidden group-hover:flex items-center gap-1">
-                  <button
-                    onClick={() => {
-                      setEditTarget(t);
-                      setShowModal(true);
-                    }}
-                    className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-blue-500 transition-colors"
-                  >
-                    <TbPencil size={15} />
-                  </button>
-                  <button
-                    onClick={() => deleteTransaction(t.id)}
-                    className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-red-500 transition-colors"
-                  >
-                    <TbTrash size={15} />
-                  </button>
-                </div>
+
+              {/* Amount */}
+              <p
+                className={`text-sm font-semibold text-left ${t.type === "income" ? "text-emerald-500" : "text-red-400"}`}
+              >
+                {t.type === "income" ? "+" : "-"}₱{t.amount.toLocaleString()}
+              </p>
+
+              {/* Actions */}
+              <div className="flex justify-end">
+                <ActionMenu
+                  onEdit={() => {
+                    setEditTarget(t);
+                    setShowModal(true);
+                  }}
+                  onDelete={() => deleteTransaction(t.id)}
+                />
               </div>
             </div>
           ))}
