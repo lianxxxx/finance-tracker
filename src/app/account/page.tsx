@@ -1,6 +1,17 @@
-import React from "react";
-import { mockAccounts } from "@/lib/mockData";
-import { TbBuildingBank, TbCreditCard, TbCash } from "react-icons/tb";
+"use client";
+
+import React, { useState } from "react";
+import { Account } from "@/lib/types";
+import { useAccounts } from "@/hooks/useAccounts";
+import AddAccountModal from "@/components/modals/AddAccountModal";
+import {
+  TbBuildingBank,
+  TbCreditCard,
+  TbCash,
+  TbPlus,
+  TbPencil,
+  TbTrash,
+} from "react-icons/tb";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 
 const typeIcon: Record<string, React.ReactElement> = {
@@ -25,35 +36,50 @@ const typeLabel: Record<string, string> = {
 };
 
 export default function AccountPage() {
-  const totalBalance = mockAccounts.reduce((sum, a) => sum + a.balance, 0);
+  const { accounts, addAccount, deleteAccount, editAccount } = useAccounts();
+  const [showModal, setShowModal] = useState(false);
+  const [editTarget, setEditTarget] = useState<Account | null>(null);
+  const totalBalance = accounts.reduce((sum, a) => sum + a.balance, 0);
 
   return (
     <div>
       {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
-          Accounts
-        </h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-          Overview of your accounts
-        </p>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50">
+            Accounts
+          </h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+            Overview of your accounts
+          </p>
+        </div>
+        <button
+          onClick={() => {
+            setEditTarget(null);
+            setShowModal(true);
+          }}
+          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-colors"
+        >
+          <TbPlus size={18} />
+          Add Account
+        </button>
       </div>
 
       {/* Total Balance Card */}
-      <div className="bg-blue-500 rounded-2xl p-6 mb-6 text-white">
+      <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 mb-6 text-white">
         <p className="text-sm font-medium opacity-80 mb-1">Total Balance</p>
         <p className="text-4xl font-bold">₱{totalBalance.toLocaleString()}</p>
         <p className="text-sm opacity-70 mt-2">
-          {mockAccounts.length} accounts connected
+          {accounts.length} accounts connected
         </p>
       </div>
 
       {/* Accounts Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {mockAccounts.map((account) => (
+        {accounts.map((account) => (
           <div
             key={account.id}
-            className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 flex items-center justify-between"
+            className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 flex items-center justify-between group"
           >
             <div className="flex items-center gap-4">
               <div
@@ -70,15 +96,53 @@ export default function AccountPage() {
                 </p>
               </div>
             </div>
-            <p
-              className={`text-base font-bold ${account.balance < 0 ? "text-red-400" : "text-slate-900 dark:text-slate-50"}`}
-            >
-              {account.balance < 0 ? "-" : ""}₱
-              {Math.abs(account.balance).toLocaleString()}
-            </p>
+            <div className="flex items-center gap-2">
+              <p
+                className={`text-base font-bold ${account.balance < 0 ? "text-red-400" : "text-slate-900 dark:text-slate-50"}`}
+              >
+                {account.balance < 0 ? "-" : ""}₱
+                {Math.abs(account.balance).toLocaleString()}
+              </p>
+              <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button
+                  onClick={() => {
+                    setEditTarget(account);
+                    setShowModal(true);
+                  }}
+                  className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-blue-500 transition-colors"
+                >
+                  <TbPencil size={15} />
+                </button>
+                <button
+                  onClick={() => deleteAccount(account.id)}
+                  className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-red-500 transition-colors"
+                >
+                  <TbTrash size={15} />
+                </button>
+              </div>
+            </div>
           </div>
         ))}
       </div>
+
+      {showModal && (
+        <AddAccountModal
+          onClose={() => {
+            setShowModal(false);
+            setEditTarget(null);
+          }}
+          onSubmit={(data) => {
+            if (editTarget) {
+              editAccount(editTarget.id, data);
+            } else {
+              addAccount(data);
+            }
+            setShowModal(false);
+            setEditTarget(null);
+          }}
+          editData={editTarget}
+        />
+      )}
     </div>
   );
 }
