@@ -76,21 +76,40 @@ export default function AddAccountModal({
             <option value="cash">Cash</option>
             <option value="credit">Credit Card</option>
           </select>
-          <input
-            type="number"
-            placeholder="Current Balance (₱)"
-            value={form.balance}
-            onChange={(e) => setForm({ ...form, balance: e.target.value })}
-            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent text-sm text-slate-900 dark:text-slate-50 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          <div>
+            <input
+              type="text"
+              inputMode="numeric"
+              placeholder="Current Balance (₱)"
+              value={
+                form.balance
+                  ? Number(form.balance.replace(/,/g, "")).toLocaleString()
+                  : ""
+              }
+              onChange={(e) => {
+                const raw = e.target.value.replace(/,/g, "");
+                if (!isNaN(Number(raw))) setForm({ ...form, balance: raw });
+              }}
+              className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent text-sm text-slate-900 dark:text-slate-50 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
         </div>
 
-        <button
-          onClick={handleSubmit}
-          className="w-full mt-4 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2.5 rounded-xl transition-colors"
-        >
-          {editData ? "Save Changes" : "Add Account"}
-        </button>
+        {/* Buttons */}
+        <div className="flex gap-3 mt-4">
+          <button
+            onClick={handleSubmit}
+            className="flex-1 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2.5 rounded-xl transition-colors"
+          >
+            {editData ? "Save Changes" : "Add Account"}
+          </button>
+          <button
+            onClick={onClose}
+            className="flex-1 py-2.5 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors"
+          >
+            Discard
+          </button>
+        </div>
       </div>
     </div>
   );
