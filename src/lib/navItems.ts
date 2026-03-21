@@ -12,7 +12,7 @@ export interface NavItem {
 }
 
 export const navItems: NavItem[] = [
-  { label: "Dashboard", href: "/", icon: RxDashboard },
+  { label: "Dashboard", href: "/dashboard", icon: RxDashboard },
   {
     label: "Transactions",
     href: "/transactions",

@@ -6,3 +6,7 @@ yunng sa may dashboard sa recent transactions dapat max of 5 lang nag aapear sa 
 put 10 max sa per page then may pagination
 currency
 modal fix may blurry konti
+
+
+YUNG ADD TRNSACTIONADD CURSOR POINTER
+TAPOS YUNG LABEL SA TABLE WALANG DARKMODE
