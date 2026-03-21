@@ -4,14 +4,8 @@ import React, { useState } from "react";
 import { Account } from "@/lib/types";
 import { useAccounts } from "@/hooks/useAccounts";
 import AddAccountModal from "@/components/modals/AddAccountModal";
-import {
-  TbBuildingBank,
-  TbCreditCard,
-  TbCash,
-  TbPlus,
-  TbPencil,
-  TbTrash,
-} from "react-icons/tb";
+import ActionMenu from "@/components/ui/ActionMenu";
+import { TbBuildingBank, TbCreditCard, TbCash, TbPlus } from "react-icons/tb";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 
 const typeIcon: Record<string, React.ReactElement> = {
@@ -58,7 +52,7 @@ export default function AccountPage() {
             setEditTarget(null);
             setShowModal(true);
           }}
-          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-colors"
+          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-colors cursor-pointer"
         >
           <TbPlus size={18} />
           Add Account
@@ -66,7 +60,7 @@ export default function AccountPage() {
       </div>
 
       {/* Total Balance Card */}
-      <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 mb-6 text-white">
+      <div className="bg-linear-to-br from-blue-500 to-blue-600 rounded-2xl p-6 mb-6 text-white">
         <p className="text-sm font-medium opacity-80 mb-1">Total Balance</p>
         <p className="text-4xl font-bold">₱{totalBalance.toLocaleString()}</p>
         <p className="text-sm opacity-70 mt-2">
@@ -79,7 +73,7 @@ export default function AccountPage() {
         {accounts.map((account) => (
           <div
             key={account.id}
-            className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 flex items-center justify-between group"
+            className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 flex items-center justify-between"
           >
             <div className="flex items-center gap-4">
               <div
@@ -88,7 +82,7 @@ export default function AccountPage() {
                 {typeIcon[account.type]}
               </div>
               <div>
-                <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+                <p className="text-sm font-semibold text-slate-900 dark:text-slate-50 ">
                   {account.name}
                 </p>
                 <p className="text-xs text-slate-400">
@@ -103,23 +97,13 @@ export default function AccountPage() {
                 {account.balance < 0 ? "-" : ""}₱
                 {Math.abs(account.balance).toLocaleString()}
               </p>
-              <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button
-                  onClick={() => {
-                    setEditTarget(account);
-                    setShowModal(true);
-                  }}
-                  className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-blue-500 transition-colors"
-                >
-                  <TbPencil size={15} />
-                </button>
-                <button
-                  onClick={() => deleteAccount(account.id)}
-                  className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-red-500 transition-colors"
-                >
-                  <TbTrash size={15} />
-                </button>
-              </div>
+              <ActionMenu
+                onEdit={() => {
+                  setEditTarget(account);
+                  setShowModal(true);
+                }}
+                onDelete={() => deleteAccount(account.id)}
+              />
             </div>
           </div>
         ))}
