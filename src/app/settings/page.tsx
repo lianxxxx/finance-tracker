@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 import {
   TbUser,
   TbMoon,
@@ -9,19 +10,19 @@ import {
   TbInfoCircle,
   TbChevronRight,
 } from "react-icons/tb";
-
+import { MdOutlineWbSunny } from "react-icons/md";
+import { IoMoonOutline } from "react-icons/io5";
 export default function SettingsPage() {
-  const [isDark, setIsDark] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
-  const toggleTheme = () => {
-    if (isDark) {
-      document.documentElement.classList.remove("dark");
-    } else {
-      document.documentElement.classList.add("dark");
-    }
-    setIsDark(!isDark);
-    localStorage.setItem("theme", isDark ? "light" : "dark");
-  };
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
+
+  const isDark = theme === "dark";
+
+  const toggleTheme = () => setTheme(isDark ? "light" : "dark");
 
   return (
     <div>
@@ -78,11 +79,36 @@ export default function SettingsPage() {
             {/* Toggle */}
             <button
               onClick={toggleTheme}
-              className={`w-11 h-6 rounded-full transition-colors relative ${isDark ? "bg-blue-500" : "bg-slate-200"}`}
+              className="relative flex items-center bg-slate-100 dark:bg-slate-800 rounded-full p-1 gap-0.5 cursor-pointer"
             >
+              {/* Sliding pill */}
               <span
-                className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-all ${isDark ? "left-5" : "left-0.5"}`}
+                className={`absolute w-7 h-7 rounded-full transition-all duration-300 ease-in-out ${
+                  isDark
+                    ? "translate-x-7.5 bg-slate-700"
+                    : "translate-x-0 bg-white shadow-sm"
+                }`}
               />
+
+              {/* Sun */}
+              <span className="relative z-10 flex items-center justify-center w-7 h-7 rounded-full transition-colors duration-300">
+                <MdOutlineWbSunny
+                  size={15}
+                  className={
+                    !isDark
+                      ? "text-amber-500"
+                      : "text-slate-400 dark:text-slate-500"
+                  }
+                />
+              </span>
+
+              {/* Moon */}
+              <span className="relative z-10 flex items-center justify-center w-7 h-7 rounded-full transition-colors duration-300">
+                <IoMoonOutline
+                  size={15}
+                  className={isDark ? "text-blue-400" : "text-slate-400"}
+                />
+              </span>
             </button>
           </div>
         </div>
@@ -106,7 +132,6 @@ export default function SettingsPage() {
                 <p className="text-xs text-slate-400">Philippine Peso (₱)</p>
               </div>
             </div>
-            <TbChevronRight size={18} className="text-slate-400" />
           </div>
         </div>
 

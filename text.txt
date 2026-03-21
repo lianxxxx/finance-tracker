@@ -1,5 +1,8 @@
-
-fix the input title
+fix the input title and label
 delete button should have a confirmation when deleting it
 in desktop, the sidebar can be hiddden (not totally the icon can still be seen)
 yung mga best practice sa next js
+yunng sa may dashboard sa recent transactions dapat max of 5 lang nag aapear sa dashboard
+put 10 max sa per page then may pagination
+currency
+modal fix may blurry konti
