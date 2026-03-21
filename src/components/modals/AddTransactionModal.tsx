@@ -56,6 +56,7 @@ export default function AddTransactionModal({
       const isCustom =
         !expenseCategories.includes(editData.category as Category) &&
         !incomeCategories.includes(editData.category as Category);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setForm({
         title: editData.title,
         amount: String(editData.amount),

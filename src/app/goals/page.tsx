@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useGoals } from "@/hooks/useGoals";
 import { Goal } from "@/lib/types";
 import AddGoalModal from "@/components/modals/AddGoalModal";
+import ActionMenu from "@/components/ui/ActionMenu";
 import React from "react";
 import {
   TbPlaneTilt,
@@ -11,8 +12,6 @@ import {
   TbDeviceLaptop,
   TbBook,
   TbTargetArrow,
-  TbPencil,
-  TbTrash,
 } from "react-icons/tb";
 
 const categoryIcon: Record<string, React.ReactElement> = {
@@ -109,23 +108,13 @@ export default function GoalsPage() {
                       {daysLeft > 0 ? `${daysLeft} days left` : "Overdue"}
                     </span>
                   )}
-                  <div className="hidden group-hover:flex items-center gap-1">
-                    <button
-                      onClick={() => {
-                        setEditTarget(goal);
-                        setShowModal(true);
-                      }}
-                      className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-blue-500 transition-colors"
-                    >
-                      <TbPencil size={15} />
-                    </button>
-                    <button
-                      onClick={() => deleteGoal(goal.id)}
-                      className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-red-500 transition-colors"
-                    >
-                      <TbTrash size={15} />
-                    </button>
-                  </div>
+                  <ActionMenu
+                    onEdit={() => {
+                      setEditTarget(goal);
+                      setShowModal(true);
+                    }}
+                    onDelete={() => deleteGoal(goal.id)}
+                  />
                 </div>
               </div>
 
