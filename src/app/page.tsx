@@ -30,13 +30,13 @@ export default function Home() {
         </em>
         <div className="flex items-center gap-2 sm:gap-4 md:gap-8">
           <Link
-            href="#"
+            href="#features"
             className="text-sm text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors hidden md:block"
           >
             Features
           </Link>
           <Link
-            href="/dashboard"
+            href="/login"
             className="text-sm text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors hidden md:block"
           >
             Login
@@ -78,7 +78,7 @@ export default function Home() {
           </button>
 
           <Link
-            href="/dashboard"
+            href="/register"
             className="text-xs sm:text-sm font-medium text-white bg-blue-500 rounded-full px-4 sm:px-5 py-1.5 sm:py-2 hover:opacity-75 transition-opacity whitespace-nowrap"
           >
             Get started
@@ -104,22 +104,60 @@ export default function Home() {
         </p>
         <div className="flex items-center gap-4">
           <Link
-            href="/dashboard"
+            href="/register"
             className="text-xs sm:text-sm font-medium text-white bg-blue-500 rounded-full px-5 sm:px-8 py-2.5 sm:py-3 hover:opacity-75 transition-opacity whitespace-nowrap"
           >
             Start for free
           </Link>
           <Link
-            href="#"
+            href="#features"
             className="text-xs sm:text-sm text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors whitespace-nowrap"
           >
-            See how it works →
+            See what&apos;s inside →
           </Link>
         </div>
       </section>
 
+      {/* Trackr Info */}
+
+      <div className="flex justify-end md:px-30 sm:px-10 px-5 md:pt-16 ">
+        <div className="max-w-md text-right pt-8">
+          <h1
+            style={{ fontFamily: "var(--font-dm-serif)" }}
+            className="md:text-6xl text-4xl sm:text-5xl leading-[1.08] tracking-tigh text-blue-300 mb-6"
+          >
+            Trackr <br />
+            <em className=" text-[#0f0f0f]  dark:text-slate-50 ">without e.</em>
+          </h1>
+
+          <p className="text-sm font-light text-slate-400 leading-relaxed my-3">
+            No subscriptions. No data selling. Just a clean space to understand
+            your finances —{" "}
+            <span className="text-slate-600 dark:text-slate-300 font-medium">
+              built for people who want clarity, not clutter.
+            </span>
+          </p>
+          <div className="flex items-center justify-end gap-4 mt-9">
+            <span className="text-xs text-blue-400 font-medium tracking-wide uppercase">
+              Free
+            </span>
+            <span className="w-1 h-1 rounded-full bg-slate-200 dark:bg-slate-700" />
+            <span className="text-xs text-blue-400 font-medium tracking-wide uppercase">
+              Open source
+            </span>
+            <span className="w-1 h-1 rounded-full bg-slate-200 dark:bg-slate-700" />
+            <span className="text-xs text-blue-400 font-medium tracking-wide uppercase">
+              No ads
+            </span>
+          </div>
+        </div>
+      </div>
+
       {/* Features Grid */}
-      <div className="md:mx-30 sm:px-10 px-5 my-16 border border-slate-100 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-3">
+      <div
+        id="features"
+        className="md:mx-30 sm:px-10 px-5 my-16 border border-slate-100 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-3"
+      >
         {[
           {
             num: "01",
@@ -158,7 +196,7 @@ export default function Home() {
       <div className="md:px-30 sm:px-10 px-5 py-12 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-4">
         <p
           style={{ fontFamily: "var(--font-dm-serif)" }}
-          className="text-lg sm:text-2xl tracking-tight dark:text-slate-50"
+          className="text-lg sm:text-2xl md:text-3xl tracking-tight dark:text-slate-50"
         >
           Your money, <em className="text-blue-300">clearly yours.</em>
         </p>
@@ -183,7 +221,7 @@ export default function Home() {
             rel="noopener noreferrer"
             className="text-slate-400 hover:text-blue-500 transition-colors"
           >
-            Leyanne Mayo
+            LMJM
           </a>
         </p>
       </footer>
