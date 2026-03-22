@@ -58,7 +58,7 @@ export default function Home() {
               <span
                 className={`absolute w-6 h-6 rounded-full transition-all duration-300 ease-in-out ${
                   isDark
-                    ? "translate-x-7.5 bg-slate-700"
+                    ? "translate-x-6.5 bg-slate-700"
                     : "translate-x-0 bg-white shadow-sm"
                 }`}
               />
