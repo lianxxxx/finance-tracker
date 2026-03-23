@@ -270,7 +270,7 @@ export default function InsightsPage() {
       </div>
 
       {/* Quick stat strip */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 sm:grid-cols-3 gap-3">
         {[
           {
             label: "Income",
@@ -298,7 +298,7 @@ export default function InsightsPage() {
         ].map((s) => (
           <div
             key={s.label}
-            className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex flex-col gap-2"
+            className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-3 sm:p-4 flex flex-col gap-2"
           >
             <span
               className={`w-7 h-7 rounded-lg flex items-center justify-center ${s.color}`}
@@ -309,7 +309,7 @@ export default function InsightsPage() {
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 {s.label}
               </p>
-              <p className="text-sm font-bold text-slate-900 dark:text-slate-50 mt-0.5">
+              <p className="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-50 mt-0.5 truncate">
                 {s.value}
               </p>
             </div>
@@ -322,9 +322,9 @@ export default function InsightsPage() {
         <button
           onClick={generateInsights}
           disabled={loading}
-          className="flex items-center justify-center gap-2.5 px-6 py-3 rounded-2xl font-semibold text-sm transition-all
-            bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white
-            disabled:opacity-60 disabled:cursor-not-allowed"
+          className="w-full sm:w-auto flex items-center justify-center gap-2.5 px-6 py-3 rounded-2xl font-semibold text-sm transition-all
+      bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white
+      disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {loading ? (
             <>

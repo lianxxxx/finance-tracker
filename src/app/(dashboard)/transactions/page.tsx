@@ -36,6 +36,7 @@ const categoryColor: Record<string, string> = {
   Bills: "bg-amber-50 dark:bg-amber-500/10 text-amber-500",
   Transport: "bg-cyan-50 dark:bg-cyan-500/10 text-cyan-500",
   Shopping: "bg-pink-50 dark:bg-pink-500/10 text-pink-500",
+  Other: "bg-slate-100 dark:bg-slate-500/10 text-slate-500",
 };
 
 export default function TransactionsPage() {
@@ -64,19 +65,19 @@ export default function TransactionsPage() {
           className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-colors"
         >
           <TbPlus size={18} />
-          Add Transaction
+          <span className="hidden sm:inline">Add Transaction</span>
+          <span className="sm:hidden">Add</span>
         </button>
       </div>
 
       {/* Table */}
       <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
         {/* Header */}
-        <div className="grid grid-cols-[1fr_1fr_auto_auto] md:grid-cols-[1fr_1fr_1fr_120px_60px] px-6 py-4 border-b border-slate-200 dark:border-slate-800">
+        <div className="hidden sm:grid sm:grid-cols-[40px_1fr_1fr_1fr_120px_60px] px-6 py-4 border-b border-slate-200 dark:border-slate-800">
+          <p className="text-xs font-medium text-slate-400">#</p>
           <p className="text-xs font-medium text-slate-400">Name</p>
           <p className="text-xs font-medium text-slate-400">Category</p>
-          <p className="text-xs font-medium text-slate-400 hidden md:block">
-            Date
-          </p>
+          <p className="text-xs font-medium text-slate-400">Date</p>
           <p className="text-xs font-medium text-slate-400 text-left">Amount</p>
           <p className="text-xs font-medium text-slate-400 text-right">
             Actions
@@ -85,30 +86,50 @@ export default function TransactionsPage() {
 
         {/* Rows */}
         <div className="divide-y divide-slate-100 dark:divide-slate-800">
-          {transactions.map((t: Transaction) => (
+          {transactions.map((t: Transaction, index: number) => (
             <div
               key={t.id}
-              className="grid grid-cols-[1fr_1fr_auto_auto] md:grid-cols-[1fr_1fr_1fr_120px_60px] items-center px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+              className="flex items-center justify-between px-4 sm:px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors sm:grid sm:grid-cols-[40px_1fr_1fr_1fr_120px_60px]"
             >
+              {/* Number - desktop only */}
+              <p className="hidden sm:block text-xs text-slate-400">
+                {index + 1}
+              </p>
+
               {/* Name */}
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 min-w-0 flex-1 sm:flex-none">
                 <div
-                  className={`w-8 h-8 rounded-lg flex items-center justify-center ${categoryColor[t.category] || "bg-slate-100 text-slate-500"}`}
+                  className={`w-8 h-8 rounded-lg shrink-0 flex items-center justify-center ${categoryColor[t.category] || "bg-slate-100 dark:bg-slate-700 text-slate-500"}`}
                 >
                   {categoryIcon[t.category] || <TbTag size={16} />}
                 </div>
-                <p className="text-sm font-medium text-slate-900 dark:text-slate-50 truncate">
-                  {t.title}
-                </p>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs text-slate-400 sm:hidden">
+                      {index + 1}.
+                    </span>
+                    <p className="text-sm font-medium text-slate-900 dark:text-slate-50 truncate">
+                      {t.title}
+                    </p>
+                  </div>
+                  <p className="text-xs text-slate-400 sm:hidden">
+                    {t.category} ·{" "}
+                    {new Date(t.date).toLocaleDateString("en-PH", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
+                  </p>
+                </div>
               </div>
 
-              {/* Category */}
-              <p className="text-sm text-slate-500 dark:text-slate-400 truncate">
+              {/* Category - desktop only */}
+              <p className="hidden sm:block text-sm text-slate-500 dark:text-slate-400 truncate">
                 {t.category}
               </p>
 
-              {/* Date */}
-              <p className="text-sm text-slate-500 dark:text-slate-400 hidden md:block">
+              {/* Date - desktop only */}
+              <p className="hidden sm:block text-sm text-slate-500 dark:text-slate-400">
                 {new Date(t.date).toLocaleDateString("en-PH", {
                   month: "short",
                   day: "numeric",
@@ -116,22 +137,22 @@ export default function TransactionsPage() {
                 })}
               </p>
 
-              {/* Amount */}
-              <p
-                className={`text-sm font-semibold text-left ${t.type === "income" ? "text-emerald-500" : "text-red-400"}`}
-              >
-                {t.type === "income" ? "+" : "-"}₱{t.amount.toLocaleString()}
-              </p>
-
-              {/* Actions */}
-              <div className="flex justify-end">
-                <ActionMenu
-                  onEdit={() => {
-                    setEditTarget(t);
-                    setShowModal(true);
-                  }}
-                  onDelete={() => deleteTransaction(t.id)}
-                />
+              {/* Amount + Actions */}
+              <div className="flex items-center gap-3 shrink-0 sm:contents">
+                <p
+                  className={`text-sm font-semibold ${t.type === "income" ? "text-emerald-500" : "text-red-400"}`}
+                >
+                  {t.type === "income" ? "+" : "-"}₱{t.amount.toLocaleString()}
+                </p>
+                <div className="sm:flex sm:justify-end">
+                  <ActionMenu
+                    onEdit={() => {
+                      setEditTarget(t);
+                      setShowModal(true);
+                    }}
+                    onDelete={() => deleteTransaction(t.id)}
+                  />
+                </div>
               </div>
             </div>
           ))}

@@ -16,7 +16,7 @@ export default function DesktopSidebar() {
         <FaUserCircle size={36} className="text-slate-400" />
         <div>
           <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">
-            Hi, Lian!
+            Hi, User!
           </p>
           <p className="text-xs text-slate-500 dark:text-slate-400">
             Finance/Expense Tracker

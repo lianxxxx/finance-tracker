@@ -29,6 +29,7 @@ const categoryColor: Record<string, string> = {
   Bills: "bg-amber-50 dark:bg-amber-500/10 text-amber-500",
   Transport: "bg-cyan-50 dark:bg-cyan-500/10 text-cyan-500",
   Shopping: "bg-pink-50 dark:bg-pink-500/10 text-pink-500",
+  Other: "bg-slate-100 dark:bg-slate-500/10 text-slate-500",
 };
 
 interface Props {
@@ -52,7 +53,8 @@ export default function RecentTransactions({ transactions }: Props) {
         </Link>
       </div>
 
-      <div className="grid grid-cols-3 px-4 mb-2">
+      {/* Header - hidden on mobile */}
+      <div className="hidden sm:grid grid-cols-3 px-4 mb-2">
         <p className="text-xs text-slate-400">Name</p>
         <p className="text-xs text-slate-400 text-center">Date</p>
         <p className="text-xs text-slate-400 text-right">Amount</p>
@@ -62,27 +64,41 @@ export default function RecentTransactions({ transactions }: Props) {
         {recent.map((t: Transaction) => (
           <div
             key={t.id}
-            className="grid grid-cols-3 items-center px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+            className="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
           >
+            {/* Left: icon + title + date (mobile) */}
             <div className="flex items-center gap-3">
               <div
-                className={`w-9 h-9 rounded-xl flex items-center justify-center ${categoryColor[t.category] || "bg-slate-100 text-slate-500"}`}
+                className={`w-9 h-9 rounded-xl shrink-0 flex items-center justify-center ${categoryColor[t.category] || "bg-slate-100 dark:bg-slate-700 text-slate-500"}`}
               >
                 {categoryIcon[t.category] || <TbTag size={18} />}
               </div>
-              <p className="text-sm font-medium text-slate-900 dark:text-slate-50">
-                {t.title}
-              </p>
+              <div>
+                <p className="text-sm font-medium text-slate-900 dark:text-slate-50">
+                  {t.title}
+                </p>
+                <p className="text-xs text-slate-400 sm:hidden">
+                  {new Date(t.date).toLocaleDateString("en-PH", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </p>
+              </div>
             </div>
-            <p className="text-xs text-slate-400 text-center">
+
+            {/* Center: date - hidden on mobile */}
+            <p className="hidden sm:block text-xs text-slate-400 text-center">
               {new Date(t.date).toLocaleDateString("en-PH", {
                 month: "short",
                 day: "numeric",
                 year: "numeric",
               })}
             </p>
+
+            {/* Right: amount */}
             <p
-              className={`text-sm font-semibold text-right ${t.type === "income" ? "text-emerald-500" : "text-red-400"}`}
+              className={`text-sm font-semibold shrink-0 ${t.type === "income" ? "text-emerald-500" : "text-red-400"}`}
             >
               {t.type === "income" ? "+" : "-"}₱{t.amount.toLocaleString()}
             </p>

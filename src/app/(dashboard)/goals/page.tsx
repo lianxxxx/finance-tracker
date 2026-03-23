@@ -83,14 +83,14 @@ export default function GoalsPage() {
               className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 group"
             >
               <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 min-w-0 flex-1">
                   <div
-                    className={`w-10 h-10 rounded-xl flex items-center justify-center ${categoryColor[goal.category]}`}
+                    className={`w-10 h-10 rounded-xl shrink-0 flex items-center justify-center ${categoryColor[goal.category]}`}
                   >
                     {categoryIcon[goal.category]}
                   </div>
-                  <div>
-                    <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-slate-900 dark:text-slate-50 truncate">
                       {goal.title}
                     </p>
                     <p className="text-xs text-slate-400 capitalize">
@@ -98,13 +98,13 @@ export default function GoalsPage() {
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 shrink-0 ml-2">
                   {isComplete ? (
                     <span className="text-xs font-medium bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500 px-2.5 py-1 rounded-full">
                       Completed! 🎉
                     </span>
                   ) : (
-                    <span className="text-xs text-slate-400">
+                    <span className="text-xs text-slate-400 whitespace-nowrap">
                       {daysLeft > 0 ? `${daysLeft} days left` : "Overdue"}
                     </span>
                   )}

@@ -27,7 +27,7 @@ export default function MobileNav() {
       <header className="md:hidden fixed top-0 left-0 right-0 z-40 bg-white dark:bg-slate-950 flex items-center justify-between px-4 py-4 border-b border-slate-200 dark:border-slate-800">
         <div className="flex items-center gap-2">
           <FaUserCircle size={32} className="text-slate-400" />
-          <p className="text-sm text-slate-400 font-medium">Hi, Lian!</p>
+          <p className="text-sm text-slate-400 font-medium">Hi, User!</p>
         </div>
         <div className="flex items-center gap-2">
           {/* Same toggle button mo sa settings — shared logic na */}
@@ -74,10 +74,10 @@ export default function MobileNav() {
               key={href}
               href={href}
               className={`flex flex-col items-center gap-1 px-1 py-1 text-xs font-medium transition-colors
-                ${isActive ? "text-blue-400" : "text-slate-500"}`}
+    ${isActive ? "text-blue-400" : "text-slate-500"}`}
             >
               <Icon size={20} />
-              {label}
+              <span className="whitespace-nowrap text-[10px]">{label}</span>
             </Link>
           );
         })}
