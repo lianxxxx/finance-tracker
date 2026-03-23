@@ -1,6 +1,6 @@
-# Trackr 💸
+# Trackr 
 
-A personal finance tracker built with Next.js, TypeScript, and Tailwind CSS. Track income, expenses, and goals — with AI-powered insights powered by multiple LLMs via OpenRouter.
+A personal finance tracker built with Next.js, TypeScript, and Tailwind CSS that tracks income, expenses, and goals, while providing AI-powered insights using multiple LLMs such as GPT-OSS 120B, LLaMA 3.3 70B, Nemotron 3 Super 120B, Trinity Large, Step 3.5 Flash, GLM 4.5 Air, and Nemotron Nano 9B.
 
 🔗 **Live demo:** [trackrph.vercel.app](https://trackrph.vercel.app)
 
@@ -8,13 +8,13 @@ A personal finance tracker built with Next.js, TypeScript, and Tailwind CSS. Tra
 
 ## Features
 
-- 📊 **Dashboard** — Overview of balance, income, expenses, and spending breakdown
-- 💸 **Transactions** — Log, edit, and delete income/expense entries with categories
-- 🏦 **Accounts** — Manage multiple accounts (bank, e-wallet, cash, credit)
-- 🎯 **Goals** — Set financial goals and track progress
-- 🤖 **AI Insights** — Multi-model AI analysis with smart fallback (GPT-OSS 120B, LLaMA 3.3 70B, and more)
-- 🌙 **Dark mode** — System-aware theme toggle
-- 📱 **Responsive** — Mobile and desktop friendly
+-  **Dashboard** — Overview of balance, income, expenses, and spending breakdown
+-  **Transactions** — Log, edit, and delete income/expense entries with categories
+-  **Accounts** — Manage multiple accounts (bank, e-wallet, cash, credit)
+-  **Goals** — Set financial goals and track progress
+-  **AI Insights** — Multi-model AI analysis with smart fallback (GPT-OSS 120B, LLaMA 3.3 70B, and more)
+-  **Dark mode** — System-aware theme toggle
+-  **Responsive** — Mobile and desktop friendly
 
 ---
 
