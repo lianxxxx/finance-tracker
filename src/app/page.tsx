@@ -5,7 +5,7 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { MdOutlineWbSunny } from "react-icons/md";
 import { IoMoonOutline } from "react-icons/io5";
-
+import { IoArrowForward } from "react-icons/io5";
 export default function Home() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -107,13 +107,15 @@ export default function Home() {
             href="/register"
             className="text-xs sm:text-sm font-medium text-white bg-blue-500 rounded-full px-5 sm:px-8 py-2.5 sm:py-3 hover:opacity-75 transition-opacity whitespace-nowrap"
           >
-            Start for free
+            Start tracking
           </Link>
           <Link
             href="/dashboard"
             className="text-xs sm:text-sm text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors whitespace-nowrap"
           >
-            See what&apos;s inside →
+            <span className="flex items-center gap-1 text-sm">
+              See what&apos;s inside <IoArrowForward className="w-4 h-4" />
+            </span>
           </Link>
         </div>
       </section>
@@ -171,8 +173,8 @@ export default function Home() {
           },
           {
             num: "03",
-            title: "Set real goals",
-            desc: "Define targets and watch your progress — week by week, peso by peso.",
+            title: "AI-Powered Insights",
+            desc: "Let AI analyze your finances and give you recommendations.",
           },
         ].map((f) => (
           <div
@@ -204,7 +206,10 @@ export default function Home() {
           href="/dashboard"
           className="text-xs sm:text-sm font-medium text-white bg-blue-500 rounded-full px-4 sm:px-6 py-2 sm:py-3 hover:opacity-75 transition-opacity whitespace-nowrap"
         >
-          Open dashboard →
+          <span className="flex items-center gap-1 text-sm">
+            Open Dashboard
+            <IoArrowForward className="w-4 h-4" />
+          </span>
         </Link>
       </div>
 
@@ -221,7 +226,7 @@ export default function Home() {
             rel="noopener noreferrer"
             className="text-slate-400 hover:text-blue-500 transition-colors"
           >
-            LMJM
+            LM
           </a>
         </p>
       </footer>
