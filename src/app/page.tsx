@@ -110,7 +110,7 @@ export default function Home() {
             Start for free
           </Link>
           <Link
-            href="#features"
+            href="/dashboard"
             className="text-xs sm:text-sm text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors whitespace-nowrap"
           >
             See what&apos;s inside →

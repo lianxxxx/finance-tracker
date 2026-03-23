@@ -10,3 +10,4 @@ modal fix may blurry konti
 
 YUNG ADD TRNSACTIONADD CURSOR POINTER
 TAPOS YUNG LABEL SA TABLE WALANG DARKMODE
+lagay ng skeleton load while genrating nung ai insights
