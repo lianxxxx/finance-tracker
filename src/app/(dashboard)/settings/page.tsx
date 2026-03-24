@@ -51,9 +51,9 @@ export default function SettingsPage() {
               </div>
               <div>
                 <p className="text-sm font-medium text-slate-900 dark:text-slate-50">
-                  Lian
+                  User
                 </p>
-                <p className="text-xs text-slate-400">lian@email.com</p>
+                <p className="text-xs text-slate-400">user@email.com</p>
               </div>
             </div>
             <TbChevronRight size={18} className="text-slate-400" />
