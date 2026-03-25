@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Transaction, MonthlyData } from "@/lib/types";
 import { mockMonthlyData } from "@/lib/mockData";
+import InsightsSkeleton from "@/components/ui/InsightsSkeleton";
 import {
   TbTrendingUp,
   TbTrendingDown,
@@ -347,8 +348,9 @@ export default function InsightsPage() {
         </div>
       )}
 
-      {/* Results */}
-      {insights && (
+      {loading ? (
+        <InsightsSkeleton />
+      ) : insights ? (
         <div className="space-y-4">
           {/* Score + summary */}
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5">
@@ -438,7 +440,7 @@ export default function InsightsPage() {
             </p>
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
