@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import {
@@ -15,6 +16,7 @@ import { IoMoonOutline } from "react-icons/io5";
 export default function SettingsPage() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const { user } = useAuth();
 
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), []);
@@ -23,6 +25,9 @@ export default function SettingsPage() {
   const isDark = theme === "dark";
 
   const toggleTheme = () => setTheme(isDark ? "light" : "dark");
+
+  const name = user?.user_metadata?.name || "User";
+  const email = user?.email || "user@email.com";
 
   return (
     <div>
@@ -51,9 +56,9 @@ export default function SettingsPage() {
               </div>
               <div>
                 <p className="text-sm font-medium text-slate-900 dark:text-slate-50">
-                  User
+                  {name}
                 </p>
-                <p className="text-xs text-slate-400">user@email.com</p>
+                <p className="text-xs text-slate-400"> {email}</p>
               </div>
             </div>
             <TbChevronRight size={18} className="text-slate-400" />

@@ -1,11 +1,14 @@
 "use client";
 
+import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { TbEye, TbEyeOff } from "react-icons/tb";
 
 export default function RegisterPage() {
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [form, setForm] = useState({
     name: "",
@@ -16,8 +19,26 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  const handleSubmit = () => {
-    router.push("/dashboard");
+  const handleSubmit = async () => {
+    if (form.password !== form.confirmPassword) {
+      setError("Passwords do not match!");
+      return;
+    }
+    setLoading(true);
+    setError("");
+    const { error } = await supabase.auth.signUp({
+      email: form.email,
+      password: form.password,
+      options: {
+        data: { name: form.name },
+      },
+    });
+    if (error) {
+      setError(error.message);
+    } else {
+      router.push("/dashboard");
+    }
+    setLoading(false);
   };
 
   const inputClass =
@@ -141,12 +162,13 @@ export default function RegisterPage() {
               {showConfirm ? <TbEyeOff size={18} /> : <TbEye size={18} />}
             </button>
           </div>
-
+          {error && <p className="text-xs text-red-400 -mt-2">{error}</p>}
           <button
             onClick={handleSubmit}
-            className="w-full mt-2 bg-blue-500 hover:opacity-75 transition-opacity text-white text-sm font-medium rounded-full py-3 cursor-pointer"
+            disabled={loading}
+            className="w-full mt-2 bg-blue-500 hover:opacity-75 disabled:opacity-50 transition-opacity text-white text-sm font-medium rounded-full py-3 cursor-pointer"
           >
-            Create account
+            {loading ? "Creating account..." : "Create account"}
           </button>
         </div>
 

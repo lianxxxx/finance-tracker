@@ -1,11 +1,14 @@
 "use client";
 
+import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { TbEye, TbEyeOff } from "react-icons/tb";
 
 export default function LoginPage() {
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [form, setForm] = useState({
     email: "",
@@ -13,10 +16,20 @@ export default function LoginPage() {
   });
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = () => {
-    router.push("/dashboard");
+  const handleSubmit = async () => {
+    setLoading(true);
+    setError("");
+    const { error } = await supabase.auth.signInWithPassword({
+      email: form.email,
+      password: form.password,
+    });
+    if (error) {
+      setError(error.message);
+    } else {
+      router.push("/dashboard");
+    }
+    setLoading(false);
   };
-
   const inputClass =
     "peer w-full border border-slate-200 dark:border-slate-700 rounded-xl px-4 pt-5 pb-2 text-sm bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 outline-none focus:border-blue-300 transition-colors placeholder-transparent";
 
@@ -88,11 +101,13 @@ export default function LoginPage() {
             </button>
           </div>
 
+          {error && <p className="text-xs text-red-400 -mt-2">{error}</p>}
           <button
             onClick={handleSubmit}
-            className="w-full mt-2 bg-blue-500 hover:opacity-75 transition-opacity text-white text-sm font-medium rounded-full py-3 cursor-pointer"
+            disabled={loading}
+            className="w-full mt-2 bg-blue-500 hover:opacity-75 disabled:opacity-50 transition-opacity text-white text-sm font-medium rounded-full py-3 cursor-pointer"
           >
-            Log in
+            {loading ? "Logging in..." : "Log in"}
           </button>
         </div>
 

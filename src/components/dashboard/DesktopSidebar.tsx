@@ -1,5 +1,6 @@
 "use client";
 
+import { User } from "@supabase/supabase-js";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LuSettings } from "react-icons/lu";
@@ -10,8 +11,11 @@ import {
 } from "react-icons/tb";
 import { navItems } from "@/lib/navItems";
 import { useState, useEffect } from "react";
+interface Props {
+  user: User;
+}
 
-export default function DesktopSidebar() {
+export default function DesktopSidebar({ user }: Props) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
 
@@ -54,7 +58,7 @@ export default function DesktopSidebar() {
         {!collapsed && (
           <div className="min-w-0">
             <p className="text-sm font-semibold text-slate-900 dark:text-slate-50 truncate">
-              Hi, User!
+              Hi, {user.user_metadata?.name || user.email}!
             </p>
             <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
               Finance/Expense Tracker
