@@ -11,6 +11,9 @@ import {
 } from "react-icons/tb";
 import { navItems } from "@/lib/navItems";
 import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
+import { useRouter } from "next/navigation";
+import { TbLogout } from "react-icons/tb";
 interface Props {
   user: User;
 }
@@ -32,6 +35,12 @@ export default function DesktopSidebar({ user }: Props) {
     window.dispatchEvent(new Event("sidebar-toggle"));
   }
 
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push("/login");
+  };
   return (
     <aside
       className={`hidden md:flex flex-col h-screen bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 fixed left-0 top-0 z-40 transition-all duration-300 
@@ -107,6 +116,15 @@ export default function DesktopSidebar({ user }: Props) {
           <LuSettings size={18} className="shrink-0" />
           {!collapsed && "Settings"}
         </Link>
+        <button
+          onClick={handleLogout}
+          title={collapsed ? "Logout" : undefined}
+          className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-colors text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 w-full cursor-pointer
+    ${collapsed ? "justify-center" : ""}`}
+        >
+          <TbLogout size={18} className="shrink-0" />
+          {!collapsed && "Logout"}
+        </button>
       </div>
     </aside>
   );

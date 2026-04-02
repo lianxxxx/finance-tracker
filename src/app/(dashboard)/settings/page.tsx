@@ -1,5 +1,8 @@
 "use client";
 
+import { supabase } from "@/lib/supabase";
+import { useRouter } from "next/navigation";
+import { TbLogout } from "react-icons/tb";
 import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
@@ -17,6 +20,7 @@ export default function SettingsPage() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const { user } = useAuth();
+  const router = useRouter();
 
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), []);
@@ -27,8 +31,12 @@ export default function SettingsPage() {
   const toggleTheme = () => setTheme(isDark ? "light" : "dark");
 
   const name = user?.user_metadata?.name || "User";
-  const email = user?.email || "user@email.com";
+  const email = user?.email || "user@example.com";
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push("/login");
+  };
   return (
     <div>
       {/* Header */}
@@ -147,6 +155,7 @@ export default function SettingsPage() {
               About
             </p>
           </div>
+
           <div className="flex items-center justify-between px-5 py-4">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-purple-50 dark:bg-purple-500/10 flex items-center justify-center text-purple-500">
@@ -160,6 +169,24 @@ export default function SettingsPage() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Logout */}
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+          <div className="px-5 py-3 border-b border-slate-100 dark:border-slate-800">
+            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">
+              Account
+            </p>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 px-5 py-4 w-full hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors cursor-pointer"
+          >
+            <div className="w-9 h-9 rounded-xl bg-red-50 dark:bg-red-500/10 flex items-center justify-center text-red-400">
+              <TbLogout size={18} />
+            </div>
+            <p className="text-sm font-medium text-red-400">Logout</p>
+          </button>
         </div>
       </div>
     </div>
