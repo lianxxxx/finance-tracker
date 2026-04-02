@@ -2,38 +2,56 @@
 
 import { useState, useEffect } from "react";
 import { Account } from "@/lib/types";
-import { mockAccounts } from "@/lib/mockData";
+import { supabase } from "@/lib/supabase";
 
 export function useAccounts() {
   const [accounts, setAccounts] = useState<Account[]>([]);
 
   useEffect(() => {
-    const stored = localStorage.getItem("accounts");
-    if (stored) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setAccounts(JSON.parse(stored));
-    } else {
-      setAccounts(mockAccounts);
-      localStorage.setItem("accounts", JSON.stringify(mockAccounts));
-    }
+    // eslint-disable-next-line react-hooks/immutability
+    fetchAccounts();
   }, []);
 
-  const save = (updated: Account[]) => {
-    setAccounts(updated);
-    localStorage.setItem("accounts", JSON.stringify(updated));
+  const fetchAccounts = async () => {
+    const { data, error } = await supabase
+      .from("accounts")
+      .select("*")
+      .order("created_at", { ascending: true });
+
+    if (!error && data) {
+      setAccounts(
+        data.map((a) => ({
+          id: a.id,
+          name: a.name,
+          type: a.type,
+          balance: a.balance,
+        })),
+      );
+    }
   };
 
-  const addAccount = (a: Omit<Account, "id">) => {
-    const newAccount: Account = { ...a, id: crypto.randomUUID() };
-    save([...accounts, newAccount]);
+  const addAccount = async (a: Omit<Account, "id">) => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    const { error } = await supabase.from("accounts").insert({
+      ...a,
+      user_id: user?.id,
+    });
+    if (!error) fetchAccounts();
   };
 
-  const deleteAccount = (id: string) => {
-    save(accounts.filter((a) => a.id !== id));
+  const deleteAccount = async (id: string) => {
+    const { error } = await supabase.from("accounts").delete().eq("id", id);
+    if (!error) fetchAccounts();
   };
 
-  const editAccount = (id: string, updated: Omit<Account, "id">) => {
-    save(accounts.map((a) => (a.id === id ? { ...updated, id } : a)));
+  const editAccount = async (id: string, updated: Omit<Account, "id">) => {
+    const { error } = await supabase
+      .from("accounts")
+      .update(updated)
+      .eq("id", id);
+    if (!error) fetchAccounts();
   };
 
   return { accounts, addAccount, deleteAccount, editAccount };

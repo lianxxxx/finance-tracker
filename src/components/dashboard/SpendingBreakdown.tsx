@@ -9,7 +9,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-
+import { TbChartDonut } from "react-icons/tb";
 const COLORS = [
   "#3b82f6",
   "#22c55e",
@@ -41,31 +41,43 @@ export default function SpendingBreakdown({ transactions }: Props) {
       <h2 className="text-base font-semibold text-slate-900 dark:text-slate-50 mb-6">
         Spending Breakdown
       </h2>
-      <ResponsiveContainer width="100%" height={250}>
-        <PieChart>
-          <Pie
-            data={categoryData}
-            cx="50%"
-            cy="50%"
-            innerRadius={60}
-            outerRadius={90}
-            dataKey="value"
-          >
-            {categoryData.map((_, index) => (
-              <Cell key={index} fill={COLORS[index % COLORS.length]} />
-            ))}
-          </Pie>
-          <Tooltip
-            formatter={(value) => [`₱${Number(value).toLocaleString()}`, ""]}
-            contentStyle={{
-              borderRadius: "12px",
-              border: "1px solid #e2e8f0",
-              fontSize: "12px",
-            }}
-          />
-          <Legend wrapperStyle={{ fontSize: "12px", paddingTop: "16px" }} />
-        </PieChart>
-      </ResponsiveContainer>
+      {categoryData.length === 0 ? (
+        <div className="h-62.5 flex flex-col items-center justify-center gap-2">
+          <TbChartDonut size={40} />
+          <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
+            No data yet
+          </p>
+          <p className="text-xs text-slate-400">
+            Add transactions to see your chart
+          </p>
+        </div>
+      ) : (
+        <ResponsiveContainer width="100%" height={250}>
+          <PieChart>
+            <Pie
+              data={categoryData}
+              cx="50%"
+              cy="50%"
+              innerRadius={60}
+              outerRadius={90}
+              dataKey="value"
+            >
+              {categoryData.map((_, index) => (
+                <Cell key={index} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip
+              formatter={(value) => [`₱${Number(value).toLocaleString()}`, ""]}
+              contentStyle={{
+                borderRadius: "12px",
+                border: "1px solid #e2e8f0",
+                fontSize: "12px",
+              }}
+            />
+            <Legend wrapperStyle={{ fontSize: "12px", paddingTop: "16px" }} />
+          </PieChart>
+        </ResponsiveContainer>
+      )}
     </div>
   );
 }

@@ -2,46 +2,62 @@
 
 import { useState, useEffect } from "react";
 import { Transaction } from "@/lib/types";
-import { mockTransactions } from "@/lib/mockData";
+import { supabase } from "@/lib/supabase";
 
 export function useTransactions() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
-  // Load from localStorage on mount
   useEffect(() => {
-    const stored = localStorage.getItem("transactions");
-    if (stored) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setTransactions(JSON.parse(stored));
-    } else {
-      setTransactions(mockTransactions);
-      localStorage.setItem("transactions", JSON.stringify(mockTransactions));
-    }
+    // eslint-disable-next-line react-hooks/immutability
+    fetchTransactions();
   }, []);
 
-  // Save to localStorage whenever transactions change
-  const save = (updated: Transaction[]) => {
-    setTransactions(updated);
-    localStorage.setItem("transactions", JSON.stringify(updated));
+  const fetchTransactions = async () => {
+    const { data, error } = await supabase
+      .from("transactions")
+      .select("*")
+      .order("date", { ascending: false });
+
+    if (!error && data) {
+      setTransactions(
+        data.map((t) => ({
+          id: t.id,
+          title: t.title,
+          amount: t.amount,
+          type: t.type,
+          category: t.category,
+          date: t.date,
+          note: t.note,
+        })),
+      );
+    }
   };
 
-  // Add
-  const addTransaction = (t: Omit<Transaction, "id">) => {
-    const newTransaction: Transaction = {
+  const addTransaction = async (t: Omit<Transaction, "id">) => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    const { error } = await supabase.from("transactions").insert({
       ...t,
-      id: crypto.randomUUID(),
-    };
-    save([newTransaction, ...transactions]);
+      user_id: user?.id,
+    });
+    if (!error) fetchTransactions();
   };
 
-  // Delete
-  const deleteTransaction = (id: string) => {
-    save(transactions.filter((t) => t.id !== id));
+  const deleteTransaction = async (id: string) => {
+    const { error } = await supabase.from("transactions").delete().eq("id", id);
+    if (!error) fetchTransactions();
   };
 
-  // Edit
-  const editTransaction = (id: string, updated: Omit<Transaction, "id">) => {
-    save(transactions.map((t) => (t.id === id ? { ...updated, id } : t)));
+  const editTransaction = async (
+    id: string,
+    updated: Omit<Transaction, "id">,
+  ) => {
+    const { error } = await supabase
+      .from("transactions")
+      .update(updated)
+      .eq("id", id);
+    if (!error) fetchTransactions();
   };
 
   return { transactions, addTransaction, deleteTransaction, editTransaction };

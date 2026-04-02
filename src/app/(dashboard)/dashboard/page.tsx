@@ -23,7 +23,7 @@ export default function DashboardPage() {
       <StatsCards transactions={transactions} />
       <div className="flex flex-col md:flex-row gap-4">
         <div className="w-full md:w-1/2">
-          <IncomeExpenseChart />
+          <IncomeExpenseChart transactions={transactions} />
         </div>
         <div className="w-full md:w-1/2">
           <SpendingBreakdown transactions={transactions} />
