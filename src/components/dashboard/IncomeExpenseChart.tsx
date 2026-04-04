@@ -35,7 +35,7 @@ export default function IncomeExpenseChart({ transactions }: Props) {
 
   return (
     <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 mb-6">
-      <h2 className="text-base font-semibold text-slate-900 dark:text-slate-50 mb-6">
+      <h2 className="text-base sm:text-left font-semibold text-slate-900 dark:text-slate-50 mb-6">
         Income vs Expense
       </h2>
       {data.length === 0 ? (
@@ -44,7 +44,7 @@ export default function IncomeExpenseChart({ transactions }: Props) {
           <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
             No data yet
           </p>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-center  text-slate-400">
             Add transactions to see your chart
           </p>
         </div>

@@ -7,6 +7,7 @@ import AddAccountModal from "@/components/modals/AddAccountModal";
 import ActionMenu from "@/components/ui/ActionMenu";
 import { TbBuildingBank, TbCreditCard, TbCash, TbPlus } from "react-icons/tb";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
+import { VscEmptyWindow } from "react-icons/vsc";
 
 const typeIcon: Record<string, React.ReactElement> = {
   cash: <TbCash size={22} />,
@@ -70,43 +71,58 @@ export default function AccountPage() {
 
       {/* Accounts Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {accounts.map((account) => (
-          <div
-            key={account.id}
-            className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3"
-          >
-            <div className="flex items-center gap-4 min-w-0">
-              <div
-                className={`w-11 h-11 rounded-xl shrink-0 flex items-center justify-center ${typeColor[account.type]}`}
-              >
-                {typeIcon[account.type]}
-              </div>
-              <div className="min-w-0">
-                <p className="text-sm font-semibold text-slate-900 dark:text-slate-50 truncate">
-                  {account.name}
-                </p>
-                <p className="text-xs text-slate-400">
-                  {typeLabel[account.type]}
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 shrink-0">
-              <p
-                className={`text-base font-bold ${account.balance < 0 ? "text-red-400" : "text-slate-900 dark:text-slate-50"}`}
-              >
-                {account.balance < 0 ? "-" : ""}₱
-                {Math.abs(account.balance).toLocaleString()}
-              </p>
-              <ActionMenu
-                onEdit={() => {
-                  setEditTarget(account);
-                  setShowModal(true);
-                }}
-                onDelete={() => deleteAccount(account.id)}
-              />
-            </div>
+        {accounts.length === 0 ? (
+          <div className="col-span-full flex flex-col items-center justify-center py-10 gap-2">
+            <VscEmptyWindow
+              size={32}
+              className="text-slate-300 dark:text-slate-600"
+            />
+            <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
+              No accounts yet
+            </p>
+            <p className="text-xs text-slate-400">
+              Click Add Account to get started
+            </p>
           </div>
-        ))}
+        ) : (
+          accounts.map((account) => (
+            <div
+              key={account.id}
+              className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3"
+            >
+              <div className="flex items-center gap-4 min-w-0">
+                <div
+                  className={`w-11 h-11 rounded-xl shrink-0 flex items-center justify-center ${typeColor[account.type]}`}
+                >
+                  {typeIcon[account.type]}
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-slate-900 dark:text-slate-50 truncate">
+                    {account.name}
+                  </p>
+                  <p className="text-xs text-slate-400">
+                    {typeLabel[account.type]}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <p
+                  className={`text-base font-bold ${account.balance < 0 ? "text-red-400" : "text-slate-900 dark:text-slate-50"}`}
+                >
+                  {account.balance < 0 ? "-" : ""}₱
+                  {Math.abs(account.balance).toLocaleString()}
+                </p>
+                <ActionMenu
+                  onEdit={() => {
+                    setEditTarget(account);
+                    setShowModal(true);
+                  }}
+                  onDelete={() => deleteAccount(account.id)}
+                />
+              </div>
+            </div>
+          ))
+        )}
       </div>
       {showModal && (
         <AddAccountModal

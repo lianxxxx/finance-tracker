@@ -7,6 +7,7 @@ import {
   TbCar,
   TbTag,
 } from "react-icons/tb";
+import { VscEmptyWindow } from "react-icons/vsc";
 import React from "react";
 import Link from "next/link";
 const categoryIcon: Record<string, React.ReactElement> = {
@@ -59,52 +60,66 @@ export default function RecentTransactions({ transactions }: Props) {
         <p className="text-xs text-slate-400 text-center">Date</p>
         <p className="text-xs text-slate-400 text-right">Amount</p>
       </div>
-
-      <div className="flex flex-col gap-2">
-        {recent.map((t: Transaction) => (
-          <div
-            key={t.id}
-            className="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-          >
-            {/* Left: icon + title + date (mobile) */}
-            <div className="flex items-center gap-3">
-              <div
-                className={`w-9 h-9 rounded-xl shrink-0 flex items-center justify-center ${categoryColor[t.category] || "bg-slate-100 dark:bg-slate-700 text-slate-500"}`}
-              >
-                {categoryIcon[t.category] || <TbTag size={18} />}
-              </div>
-              <div>
-                <p className="text-sm font-medium text-slate-900 dark:text-slate-50">
-                  {t.title}
-                </p>
-                <p className="text-xs text-slate-400 sm:hidden">
-                  {new Date(t.date).toLocaleDateString("en-PH", {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
-                </p>
-              </div>
-            </div>
-
-            {/* Center: date - hidden on mobile */}
-            <p className="hidden sm:block text-xs text-slate-400 text-center">
-              {new Date(t.date).toLocaleDateString("en-PH", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              })}
-            </p>
-
-            {/* Right: amount */}
-            <p
-              className={`text-sm font-semibold shrink-0 ${t.type === "income" ? "text-emerald-500" : "text-red-400"}`}
+      {recent.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-2 gap-2">
+          <VscEmptyWindow
+            size={35}
+            className="text-slate-300 dark:text-slate-600"
+          />
+          <p className="text-sm font-medium text-center  text-slate-500 dark:text-slate-400">
+            No transactions yet
+          </p>
+          <p className="text-xs text-center text-slate-400">
+            Add your first transaction to get started
+          </p>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2">
+          {recent.map((t: Transaction) => (
+            <div
+              key={t.id}
+              className="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
             >
-              {t.type === "income" ? "+" : "-"}₱{t.amount.toLocaleString()}
-            </p>
-          </div>
-        ))}
-      </div>
+              {/* Left: icon + title + date (mobile) */}
+              <div className="flex items-center gap-3">
+                <div
+                  className={`w-9 h-9 rounded-xl shrink-0 flex items-center justify-center ${categoryColor[t.category] || "bg-slate-100 dark:bg-slate-700 text-slate-500"}`}
+                >
+                  {categoryIcon[t.category] || <TbTag size={18} />}
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-slate-900 dark:text-slate-50">
+                    {t.title}
+                  </p>
+                  <p className="text-xs text-slate-400 sm:hidden">
+                    {new Date(t.date).toLocaleDateString("en-PH", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
+                  </p>
+                </div>
+              </div>
+
+              {/* Center: date - hidden on mobile */}
+              <p className="hidden sm:block text-xs text-slate-400 text-center">
+                {new Date(t.date).toLocaleDateString("en-PH", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </p>
+
+              {/* Right: amount */}
+              <p
+                className={`text-sm font-semibold shrink-0 ${t.type === "income" ? "text-emerald-500" : "text-red-400"}`}
+              >
+                {t.type === "income" ? "+" : "-"}₱{t.amount.toLocaleString()}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

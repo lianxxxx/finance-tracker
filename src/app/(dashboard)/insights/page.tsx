@@ -1,8 +1,8 @@
 "use client";
 
+import { supabase } from "@/lib/supabase";
 import { useState, useEffect } from "react";
 import { Transaction, MonthlyData } from "@/lib/types";
-import { mockMonthlyData } from "@/lib/mockData";
 import InsightsSkeleton from "@/components/ui/InsightsSkeleton";
 import {
   TbTrendingUp,
@@ -207,10 +207,28 @@ export default function InsightsPage() {
   const [generated, setGenerated] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem("transactions");
-    if (stored) {
-      setTransactions(JSON.parse(stored));
-    }
+    const fetchTransactions = async () => {
+      const { data, error } = await supabase
+        .from("transactions")
+        .select("*")
+        .order("date", { ascending: false });
+
+      if (!error && data) {
+        setTransactions(
+          data.map((t) => ({
+            id: t.id,
+            title: t.title,
+            amount: t.amount,
+            type: t.type,
+            category: t.category,
+            date: t.date,
+            note: t.note,
+          })),
+        );
+      }
+    };
+
+    fetchTransactions();
   }, []);
 
   async function generateInsights() {
@@ -223,7 +241,7 @@ export default function InsightsPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          prompt: buildPrompt(transactions, mockMonthlyData),
+          prompt: buildPrompt(transactions, []),
         }),
       });
 
@@ -248,15 +266,29 @@ export default function InsightsPage() {
     .filter((t) => t.type === "income")
     .reduce((s, t) => s + t.amount, 0);
   const net = totalIncome - totalExpenses;
-  const lastTwo = mockMonthlyData.slice(-2);
+  const lastTwo = transactions.reduce(
+    (acc, t) => {
+      const month = new Date(t.date).toLocaleString("en-PH", {
+        month: "short",
+      });
+      if (!acc[month]) acc[month] = { income: 0, expenses: 0 };
+      if (t.type === "income") acc[month].income += t.amount;
+      else acc[month].expenses += t.amount;
+      return acc;
+    },
+    {} as Record<string, { income: number; expenses: number }>,
+  );
+
+  const monthValues = Object.values(lastTwo);
   const momChange =
-    lastTwo.length === 2
+    monthValues.length >= 2
       ? (
-          ((lastTwo[1].expenses - lastTwo[0].expenses) / lastTwo[0].expenses) *
+          ((monthValues[monthValues.length - 1].expenses -
+            monthValues[monthValues.length - 2].expenses) /
+            monthValues[monthValues.length - 2].expenses) *
           100
         ).toFixed(1)
       : null;
-
   return (
     <div className="min-h-screen space-y-6">
       {/* Header */}
@@ -265,8 +297,8 @@ export default function InsightsPage() {
           AI Insights
         </h1>
         <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-          Powered by GPT-OSS, LLaMA 3.3 & more with smart fallback · Based on
-          your localStorage data
+          Powered by GPT-OSS, LLaMA 3.3 & more with smart fallback for reliable
+          insights.
         </p>
       </div>
 
@@ -324,7 +356,7 @@ export default function InsightsPage() {
           onClick={generateInsights}
           disabled={loading}
           className="w-full sm:w-auto flex items-center justify-center gap-2.5 px-6 py-3 rounded-2xl font-semibold text-sm transition-all
-      bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white
+      bg-blue-600 hover:bg-blue-700 active:scale-[0.98] cursor-pointer text-white
       disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {loading ? (

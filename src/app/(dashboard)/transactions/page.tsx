@@ -15,7 +15,7 @@ import {
   TbTag,
   TbPlus,
 } from "react-icons/tb";
-
+import { VscEmptyWindow } from "react-icons/vsc";
 const categoryIcon: Record<string, React.ReactElement> = {
   Food: <TbShoppingCart size={16} />,
   Salary: <TbCash size={16} />,
@@ -62,7 +62,7 @@ export default function TransactionsPage() {
             setEditTarget(null);
             setShowModal(true);
           }}
-          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-colors"
+          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-colors cursor-pointer"
         >
           <TbPlus size={18} />
           <span className="hidden sm:inline">Add Transaction</span>
@@ -86,76 +86,92 @@ export default function TransactionsPage() {
 
         {/* Rows */}
         <div className="divide-y divide-slate-100 dark:divide-slate-800">
-          {transactions.map((t: Transaction, index: number) => (
-            <div
-              key={t.id}
-              className="flex items-center justify-between px-4 sm:px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors sm:grid sm:grid-cols-[40px_1fr_1fr_1fr_120px_60px]"
-            >
-              {/* Number - desktop only */}
-              <p className="hidden sm:block text-xs text-slate-400">
-                {index + 1}
+          {transactions.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-4 gap-2">
+              <VscEmptyWindow
+                size={32}
+                className="text-slate-300 dark:text-slate-600"
+              />
+              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
+                No transactions yet
               </p>
+              <p className="text-xs text-slate-400">
+                Click Add Transaction to get started
+              </p>
+            </div>
+          ) : (
+            transactions.map((t: Transaction, index: number) => (
+              <div
+                key={t.id}
+                className="flex items-center justify-between px-4 sm:px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors sm:grid sm:grid-cols-[40px_1fr_1fr_1fr_120px_60px]"
+              >
+                {/* Number - desktop only */}
+                <p className="hidden sm:block text-xs text-slate-400">
+                  {index + 1}
+                </p>
 
-              {/* Name */}
-              <div className="flex items-center gap-3 min-w-0 flex-1 sm:flex-none">
-                <div
-                  className={`w-8 h-8 rounded-lg shrink-0 flex items-center justify-center ${categoryColor[t.category] || "bg-slate-100 dark:bg-slate-700 text-slate-500"}`}
-                >
-                  {categoryIcon[t.category] || <TbTag size={16} />}
-                </div>
-                <div className="min-w-0">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-xs text-slate-400 sm:hidden">
-                      {index + 1}.
-                    </span>
-                    <p className="text-sm font-medium text-slate-900 dark:text-slate-50 truncate">
-                      {t.title}
+                {/* Name */}
+                <div className="flex items-center gap-3 min-w-0 flex-1 sm:flex-none">
+                  <div
+                    className={`w-8 h-8 rounded-lg shrink-0 flex items-center justify-center ${categoryColor[t.category] || "bg-slate-100 dark:bg-slate-700 text-slate-500"}`}
+                  >
+                    {categoryIcon[t.category] || <TbTag size={16} />}
+                  </div>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs text-slate-400 sm:hidden">
+                        {index + 1}.
+                      </span>
+                      <p className="text-sm font-medium text-slate-900 dark:text-slate-50 truncate">
+                        {t.title}
+                      </p>
+                    </div>
+                    <p className="text-xs text-slate-400 sm:hidden">
+                      {t.category} ·{" "}
+                      {new Date(t.date).toLocaleDateString("en-PH", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
                     </p>
                   </div>
-                  <p className="text-xs text-slate-400 sm:hidden">
-                    {t.category} ·{" "}
-                    {new Date(t.date).toLocaleDateString("en-PH", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
-                  </p>
                 </div>
-              </div>
 
-              {/* Category - desktop only */}
-              <p className="hidden sm:block text-sm text-slate-500 dark:text-slate-400 truncate">
-                {t.category}
-              </p>
-
-              {/* Date - desktop only */}
-              <p className="hidden sm:block text-sm text-slate-500 dark:text-slate-400">
-                {new Date(t.date).toLocaleDateString("en-PH", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </p>
-
-              {/* Amount + Actions */}
-              <div className="flex items-center gap-3 shrink-0 sm:contents">
-                <p
-                  className={`text-sm font-semibold ${t.type === "income" ? "text-emerald-500" : "text-red-400"}`}
-                >
-                  {t.type === "income" ? "+" : "-"}₱{t.amount.toLocaleString()}
+                {/* Category - desktop only */}
+                <p className="hidden sm:block text-sm text-slate-500 dark:text-slate-400 truncate">
+                  {t.category}
                 </p>
-                <div className="sm:flex sm:justify-end">
-                  <ActionMenu
-                    onEdit={() => {
-                      setEditTarget(t);
-                      setShowModal(true);
-                    }}
-                    onDelete={() => deleteTransaction(t.id)}
-                  />
+
+                {/* Date - desktop only */}
+                <p className="hidden sm:block text-sm text-slate-500 dark:text-slate-400">
+                  {new Date(t.date).toLocaleDateString("en-PH", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </p>
+
+                {/* Amount + Actions */}
+                <div className="flex items-center gap-3 shrink-0 sm:contents">
+                  <p
+                    className={`text-sm font-semibold ${t.type === "income" ? "text-emerald-500" : "text-red-400"}`}
+                  >
+                    {t.type === "income" ? "+" : "-"}₱
+                    {t.amount.toLocaleString()}
+                  </p>
+                  <div className="sm:flex sm:justify-end">
+                    <ActionMenu
+                      onEdit={() => {
+                        setEditTarget(t);
+                        setShowModal(true);
+                      }}
+                      onDelete={() => deleteTransaction(t.id)}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
 
