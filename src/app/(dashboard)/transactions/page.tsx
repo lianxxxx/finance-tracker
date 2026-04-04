@@ -71,7 +71,7 @@ export default function TransactionsPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 ">
         {/* Header */}
         <div className="hidden sm:grid sm:grid-cols-[40px_1fr_1fr_1fr_120px_60px] px-6 py-4 border-b border-slate-200 dark:border-slate-800">
           <p className="text-xs font-medium text-slate-400">#</p>

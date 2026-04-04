@@ -22,7 +22,7 @@ export default function ActionMenu({ onEdit, onDelete }: Props) {
       {open && (
         <>
           <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 top-8 z-20 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-lg overflow-hidden w-32">
+          <div className="absolute right-0 top-8 z-50 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-lg overflow-hidden w-32">
             <button
               onClick={() => {
                 onEdit();
