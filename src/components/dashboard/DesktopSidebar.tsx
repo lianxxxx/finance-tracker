@@ -14,6 +14,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { TbLogout } from "react-icons/tb";
+import ConfirmLogoutModal from "@/components/modals/ConfirmLogoutModal";
 interface Props {
   user: User;
 }
@@ -36,12 +37,15 @@ export default function DesktopSidebar({ user }: Props) {
   }
 
   const router = useRouter();
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
     router.push("/login");
   };
+
   return (
+    <>
     <aside
       className={`hidden md:flex flex-col h-screen bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 fixed left-0 top-0 z-40 transition-all duration-300 
     ${collapsed ? "w-20" : "w-64"}`}
@@ -117,7 +121,7 @@ export default function DesktopSidebar({ user }: Props) {
           {!collapsed && "Settings"}
         </Link>
         <button
-          onClick={handleLogout}
+          onClick={() => setShowLogoutConfirm(true)}
           title={collapsed ? "Logout" : undefined}
           className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-colors text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 w-full cursor-pointer
     ${collapsed ? "justify-center" : ""}`}
@@ -127,5 +131,13 @@ export default function DesktopSidebar({ user }: Props) {
         </button>
       </div>
     </aside>
+
+    {showLogoutConfirm && (
+      <ConfirmLogoutModal
+        onClose={() => setShowLogoutConfirm(false)}
+        onConfirm={handleLogout}
+      />
+    )}
+    </>
   );
 }

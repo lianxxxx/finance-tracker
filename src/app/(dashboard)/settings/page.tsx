@@ -6,6 +6,7 @@ import { TbLogout } from "react-icons/tb";
 import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import ConfirmLogoutModal from "@/components/modals/ConfirmLogoutModal";
 import {
   TbUser,
   TbMoon,
@@ -19,6 +20,7 @@ import { IoMoonOutline } from "react-icons/io5";
 export default function SettingsPage() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const { user } = useAuth();
   const router = useRouter();
 
@@ -179,7 +181,7 @@ export default function SettingsPage() {
             </p>
           </div>
           <button
-            onClick={handleLogout}
+            onClick={() => setShowLogoutConfirm(true)}
             className="flex items-center gap-3 px-5 py-4 w-full hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors cursor-pointer"
           >
             <div className="w-9 h-9 rounded-xl bg-red-50 dark:bg-red-500/10 flex items-center justify-center text-red-400">
@@ -189,6 +191,13 @@ export default function SettingsPage() {
           </button>
         </div>
       </div>
+
+      {showLogoutConfirm && (
+        <ConfirmLogoutModal
+          onClose={() => setShowLogoutConfirm(false)}
+          onConfirm={handleLogout}
+        />
+      )}
     </div>
   );
 }

@@ -43,3 +43,15 @@ export interface Goal {
   currentAmount: number;
   deadline: string;
 }
+
+export interface LogoutConfirm {
+  onClose: () => void;
+  onConfirm: () => void;
+}
+
+export interface DeleteConfirm {
+  title: string;
+  description: string;
+  onClose: () => void;
+  onConfirm: () => void;
+}
