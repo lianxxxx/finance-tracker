@@ -79,28 +79,41 @@ export default function AddAccountModal({
         </div>
 
         <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="Account name (e.g. BPI Savings)"
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent text-sm text-slate-900 dark:text-slate-50 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          <div className="relative">
+            <input
+              type="text"
+              id="accountname"
+              placeholder="Account name (e.g. BPI Savings)"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              className="peer w-full border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 pb-2 text-sm bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 outline-none focus:border-blue-300 transition-colors placeholder-transparent"
+            />
+            <label
+              htmlFor="accountname"
+              className="absolute left-3 px-1 text-slate-400 bg-white dark:bg-slate-900 transition-all duration-200
+      top-2.5 text-sm
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-400
+      peer-not-placeholder-shown:-top-2 peer-not-placeholder-shown:text-xs"
+            >
+              Account name
+            </label>
+          </div>
           <select
             value={form.type}
             onChange={(e) =>
               setForm({ ...form, type: e.target.value as Account["type"] })
             }
-            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+            className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-slate-50 focus:outline-none  focus:border-blue-300 cursor-pointer"
           >
             <option value="bank">Bank Account</option>
             <option value="ewallet">E-Wallet</option>
             <option value="cash">Cash</option>
             <option value="credit">Credit Card</option>
           </select>
-          <div>
+          <div className="relative">
             <input
               type="text"
+              id="balance"
               inputMode="numeric"
               placeholder="Current Balance (₱)"
               value={
@@ -112,8 +125,17 @@ export default function AddAccountModal({
                 const raw = e.target.value.replace(/,/g, "");
                 if (!isNaN(Number(raw))) setForm({ ...form, balance: raw });
               }}
-              className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent text-sm text-slate-900 dark:text-slate-50 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="peer w-full border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 pb-2 text-sm bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 outline-none focus:border-blue-300 transition-colors placeholder-transparent"
             />
+            <label
+              htmlFor="balance"
+              className="absolute left-3 px-1 text-slate-400 bg-white dark:bg-slate-900 transition-all duration-200
+      top-2.5 text-sm
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500
+      peer-not-placeholder-shown:-top-2 peer-not-placeholder-shown:text-xs"
+            >
+              Current Balance (₱)
+            </label>
           </div>
         </div>
 
@@ -127,7 +149,7 @@ export default function AddAccountModal({
           </button>
           <button
             onClick={onClose}
-            className="flex-1 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 text-sm font-medium py-2.5 rounded-xl transition-colors border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"
+            className="flex-1 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 text-sm font-medium py-2.5 rounded-xl transition-colors border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-800 cursor-pointer"
           >
             Discard
           </button>

@@ -176,21 +176,45 @@ export default function AddTransactionModal({
         </div>
 
         <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="Title"
-            value={form.title}
-            onChange={(e) => setForm({ ...form, title: e.target.value })}
-            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent text-sm text-slate-900 dark:text-slate-50 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <input
-            type="text"
-            inputMode="decimal"
-            placeholder="Amount (₱)"
-            value={displayAmount}
-            onChange={handleAmountChange}
-            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent text-sm text-slate-900 dark:text-slate-50 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          <div className="relative">
+            <input
+              type="text"
+              id="title"
+              placeholder="Title"
+              value={form.title}
+              onChange={(e) => setForm({ ...form, title: e.target.value })}
+              className="peer w-full border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 pb-2 text-sm bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 outline-none focus:border-blue-300 transition-colors placeholder-transparent"
+            />
+            <label
+              htmlFor="title"
+              className="absolute left-3 px-1 text-slate-400 bg-white dark:bg-slate-900 transition-all duration-200
+      top-2.5 text-sm
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500
+      peer-not-placeholder-shown:-top-2 peer-not-placeholder-shown:text-xs"
+            >
+              Title
+            </label>
+          </div>
+          <div className="relative">
+            <input
+              type="text"
+              id="amount"
+              inputMode="decimal"
+              placeholder="Amount (₱)"
+              value={displayAmount}
+              onChange={handleAmountChange}
+              className="peer w-full border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3  pb-2 text-sm bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 outline-none focus:border-blue-300 transition-colors placeholder-transparent"
+            />
+            <label
+              htmlFor="amount"
+              className="absolute left-3 px-1 text-slate-400 bg-white dark:bg-slate-900 transition-all duration-200
+      top-2.5 text-sm
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500
+      peer-not-placeholder-shown:-top-2 peer-not-placeholder-shown:text-xs"
+            >
+              Amount
+            </label>
+          </div>
           {form.category === "Other" ? (
             <div className="relative">
               <input
@@ -198,7 +222,7 @@ export default function AddTransactionModal({
                 placeholder="Type your category"
                 value={customCategory}
                 onChange={(e) => setCustomCategory(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent text-sm text-slate-900 dark:text-slate-50 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent text-sm text-slate-900 dark:text-slate-50 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-300"
               />
               <button
                 onClick={() => {
@@ -216,7 +240,7 @@ export default function AddTransactionModal({
               onChange={(e) =>
                 setForm({ ...form, category: e.target.value as Category })
               }
-              className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-slate-50 focus:outline-none  focus:border-blue-300 cursor-pointer"
             >
               {(form.type === "income"
                 ? incomeCategories
@@ -232,7 +256,7 @@ export default function AddTransactionModal({
             type="date"
             value={form.date}
             onChange={(e) => setForm({ ...form, date: e.target.value })}
-            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+            className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-slate-50 focus:outline-none  focus:border-blue-300 cursor-pointer"
           />
           <div className="relative">
             <TbNotes
@@ -244,7 +268,7 @@ export default function AddTransactionModal({
               value={form.note}
               onChange={(e) => setForm({ ...form, note: e.target.value })}
               rows={2}
-              className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent text-sm text-slate-900 dark:text-slate-50 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              className="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent text-sm text-slate-900 dark:text-slate-50  placeholder:text-slate-400 focus:outline-none  focus:border-blue-300 transition-colors resize-none"
             />
           </div>
         </div>
@@ -258,7 +282,7 @@ export default function AddTransactionModal({
           </button>
           <button
             onClick={onClose}
-            className="flex-1 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 text-sm font-medium py-2.5 rounded-xl transition-colors border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"
+            className="flex-1 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 text-sm font-medium py-2.5 rounded-xl transition-colors border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-800 cursor-pointer"
           >
             Discard
           </button>

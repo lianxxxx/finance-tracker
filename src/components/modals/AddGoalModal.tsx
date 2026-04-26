@@ -120,13 +120,22 @@ export default function AddGoalModal({ onClose, onSubmit, editData }: Props) {
         </div>
 
         <div className="flex flex-col gap-3">
-          <input
-            type="text"
-            placeholder="Goal title (e.g. Japan Trip)"
-            value={form.title}
-            onChange={(e) => setForm({ ...form, title: e.target.value })}
-            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent text-sm text-slate-900 dark:text-slate-50 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          <div className="relative">
+            <input
+              type="text"
+              id="goaltitle"
+              placeholder="Goal title (e.g. Japan Trip)"
+              value={form.title}
+              onChange={(e) => setForm({ ...form, title: e.target.value })}
+              className="peer w-full border border-slate-200 dark:border-slate-700 rounded-xl px-4 pt-5 pb-2 text-sm bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 outline-none focus:border-blue-300 transition-colors placeholder-transparent"
+            />
+            <label
+              htmlFor="goaltitle"
+              className="absolute left-3 px-1 text-slate-400 bg-white dark:bg-slate-900 transition-all duration-200 top-3.5 text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-400 peer-not-placeholder-shown:-top-2 peer-not-placeholder-shown:text-xs"
+            >
+              Goal title (e.g. Japan Trip)
+            </label>
+          </div>
 
           {form.category === "other" ? (
             <div className="relative">
@@ -165,29 +174,55 @@ export default function AddGoalModal({ onClose, onSubmit, editData }: Props) {
               ))}
             </select>
           )}
-
-          <input
-            type="text"
-            inputMode="decimal"
-            placeholder="Target Amount (₱)"
-            value={displayTarget}
-            onChange={(e) =>
-              handleAmountChange(e, "targetAmount", setDisplayTarget)
-            }
-            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent text-sm text-slate-900 dark:text-slate-50 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-
-          <div>
+          <div className="relative">
             <input
               type="text"
+              id="targetAmount"
               inputMode="decimal"
-              placeholder="Current Amount (₱)"
-              value={displayCurrent}
+              placeholder="Target Amount (₱)"
+              value={displayTarget}
               onChange={(e) =>
-                handleAmountChange(e, "currentAmount", setDisplayCurrent)
+                handleAmountChange(e, "targetAmount", setDisplayTarget)
               }
-              className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent text-sm text-slate-900 dark:text-slate-50 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="peer w-full border border-slate-200 dark:border-slate-700 rounded-xl px-4 pt-5 pb-2 text-sm bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 outline-none focus:border-blue-300 transition-colors placeholder-transparent"
             />
+            <label
+              htmlFor="targetAmount"
+              className="absolute left-3 px-1 text-slate-400 bg-white dark:bg-slate-900 transition-all duration-200 top-3.5 text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-400 peer-not-placeholder-shown:-top-2 peer-not-placeholder-shown:text-xs"
+            >
+              Target Amount (₱)
+            </label>
+          </div>
+
+          <div>
+            <div>
+              <div className="relative">
+                <input
+                  type="text"
+                  id="currentAmount"
+                  inputMode="decimal"
+                  placeholder="Current Amount (₱)"
+                  value={displayCurrent}
+                  onChange={(e) =>
+                    handleAmountChange(e, "currentAmount", setDisplayCurrent)
+                  }
+                  className="peer w-full border border-slate-200 dark:border-slate-700 rounded-xl px-4 pt-5 pb-2 text-sm bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 outline-none focus:border-blue-300 transition-colors placeholder-transparent"
+                />
+                <label
+                  htmlFor="currentAmount"
+                  className="absolute left-3 px-1 text-slate-400 bg-white dark:bg-slate-900 transition-all duration-200 top-3.5 text-sm peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-400 peer-not-placeholder-shown:-top-2 peer-not-placeholder-shown:text-xs"
+                >
+                  Current Amount (₱)
+                </label>
+              </div>
+              {Number(form.currentAmount) > Number(form.targetAmount) &&
+                form.currentAmount &&
+                form.targetAmount && (
+                  <p className="text-xs text-red-400 mt-1 px-1">
+                    Current amount cannot exceed target amount!
+                  </p>
+                )}
+            </div>
             {Number(form.currentAmount) > Number(form.targetAmount) &&
               form.currentAmount &&
               form.targetAmount && (
