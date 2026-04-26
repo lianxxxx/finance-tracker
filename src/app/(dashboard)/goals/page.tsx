@@ -5,6 +5,7 @@ import { useGoals } from "@/hooks/useGoals";
 import { Goal } from "@/lib/types";
 import AddGoalModal from "@/components/modals/AddGoalModal";
 import ConfirmDeleteModal from "@/components/modals/ConfirmDeleteModal";
+import GoalsSkeleton from "@/components/skeletons/GoalsSkeleton";
 import ActionMenu from "@/components/ui/ActionMenu";
 import React from "react";
 import {
@@ -44,7 +45,9 @@ export default function GoalsPage() {
   const [showModal, setShowModal] = useState(false);
   const [editTarget, setEditTarget] = useState<Goal | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
-  const { goals, addGoal, deleteGoal, editGoal } = useGoals();
+  const { goals, loading, addGoal, deleteGoal, editGoal } = useGoals();
+
+  if (loading) return <GoalsSkeleton />;
 
   return (
     <div>

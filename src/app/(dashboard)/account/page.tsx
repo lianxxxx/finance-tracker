@@ -5,6 +5,7 @@ import { Account } from "@/lib/types";
 import { useAccounts } from "@/hooks/useAccounts";
 import AddAccountModal from "@/components/modals/AddAccountModal";
 import ConfirmDeleteModal from "@/components/modals/ConfirmDeleteModal";
+import AccountsSkeleton from "@/components/skeletons/AccountsSkeleton";
 import ActionMenu from "@/components/ui/ActionMenu";
 import { TbBuildingBank, TbCreditCard, TbCash, TbPlus } from "react-icons/tb";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
@@ -32,11 +33,13 @@ const typeLabel: Record<string, string> = {
 };
 
 export default function AccountPage() {
-  const { accounts, addAccount, deleteAccount, editAccount } = useAccounts();
+  const { accounts, loading, addAccount, deleteAccount, editAccount } = useAccounts();
   const [showModal, setShowModal] = useState(false);
   const [editTarget, setEditTarget] = useState<Account | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
   const totalBalance = accounts.reduce((sum, a) => sum + a.balance, 0);
+
+  if (loading) return <AccountsSkeleton />;
 
   return (
     <div>

@@ -6,10 +6,13 @@ import StatsCards from "@/components/dashboard/StatsCards";
 import IncomeExpenseChart from "@/components/dashboard/IncomeExpenseChart";
 import SpendingBreakdown from "@/components/dashboard/SpendingBreakdown";
 import RecentTransactions from "@/components/dashboard/RecentTransactions";
+import DashboardSkeleton from "@/components/skeletons/DashboardSkeleton";
 
 export default function DashboardPage() {
   const { user } = useAuth();
-  const { transactions } = useTransactions();
+  const { transactions, loading } = useTransactions();
+
+  if (loading) return <DashboardSkeleton />;
   const name = user?.user_metadata?.name || user?.email || "User";
 
   return (

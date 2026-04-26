@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Transaction } from "@/lib/types";
 import { useTransactions } from "@/hooks/useTransactions";
 import AddTransactionModal from "@/components/modals/AddTransactionModal";
+import TransactionsSkeleton from "@/components/skeletons/TransactionsSkeleton";
 import ConfirmDeleteModal from "@/components/modals/ConfirmDeleteModal";
 import ActionMenu from "@/components/ui/ActionMenu";
 import React from "react";
@@ -52,6 +53,7 @@ export default function TransactionsPage() {
     transactions,
     totalCount,
     page,
+    loading,
     setPage,
     addTransaction,
     deleteTransaction,
@@ -59,6 +61,8 @@ export default function TransactionsPage() {
   } = useTransactions();
 
   const totalPages = Math.ceil(totalCount / PAGE_SIZE);
+
+  if (loading) return <TransactionsSkeleton />;
 
   return (
     <div>

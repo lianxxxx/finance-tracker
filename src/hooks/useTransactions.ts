@@ -11,6 +11,7 @@ export function useTransactions() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(true);
   const { showToast } = useToast();
 
   const fetchTransactions = useCallback(async (currentPage: number) => {
@@ -37,6 +38,7 @@ export function useTransactions() {
       );
       setTotalCount(count ?? 0);
     }
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -89,6 +91,7 @@ export function useTransactions() {
     transactions,
     totalCount,
     page,
+    loading,
     setPage,
     addTransaction,
     deleteTransaction,

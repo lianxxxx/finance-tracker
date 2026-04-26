@@ -7,6 +7,7 @@ import { useToast } from "@/context/ToastContext";
 
 export function useGoals() {
   const [goals, setGoals] = useState<Goal[]>([]);
+  const [loading, setLoading] = useState(true);
   const { showToast } = useToast();
 
   useEffect(() => {
@@ -32,6 +33,7 @@ export function useGoals() {
         })),
       );
     }
+    setLoading(false);
   };
 
   const addGoal = async (g: Omit<Goal, "id">) => {
@@ -83,5 +85,5 @@ export function useGoals() {
     }
   };
 
-  return { goals, addGoal, deleteGoal, editGoal };
+  return { goals, loading, addGoal, deleteGoal, editGoal };
 }

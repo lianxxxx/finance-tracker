@@ -7,6 +7,7 @@ import { useToast } from "@/context/ToastContext";
 
 export function useAccounts() {
   const [accounts, setAccounts] = useState<Account[]>([]);
+  const [loading, setLoading] = useState(true);
   const { showToast } = useToast();
 
   useEffect(() => {
@@ -30,6 +31,7 @@ export function useAccounts() {
         })),
       );
     }
+    setLoading(false);
   };
 
   const addAccount = async (a: Omit<Account, "id">) => {
@@ -71,5 +73,5 @@ export function useAccounts() {
     }
   };
 
-  return { accounts, addAccount, deleteAccount, editAccount };
+  return { accounts, loading, addAccount, deleteAccount, editAccount };
 }

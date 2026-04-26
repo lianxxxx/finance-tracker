@@ -8,6 +8,7 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import ConfirmLogoutModal from "@/components/modals/ConfirmLogoutModal";
 import { useToast } from "@/context/ToastContext";
+import SettingsSkeleton from "@/components/skeletons/SettingsSkeleton";
 import {
   TbUser,
   TbMoon,
@@ -28,7 +29,7 @@ export default function SettingsPage() {
 
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), []);
-  if (!mounted) return null;
+  if (!mounted) return <SettingsSkeleton />;
 
   const isDark = theme === "dark";
 
