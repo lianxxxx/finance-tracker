@@ -3,9 +3,11 @@
 import { useState, useEffect } from "react";
 import { Goal } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
+import { useToast } from "@/context/ToastContext";
 
 export function useGoals() {
   const [goals, setGoals] = useState<Goal[]>([]);
+  const { showToast } = useToast();
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/immutability
@@ -44,12 +46,22 @@ export function useGoals() {
       deadline: g.deadline,
       user_id: user?.id,
     });
-    if (!error) fetchGoals();
+    if (error) {
+      showToast("error", error.message);
+    } else {
+      showToast("success", "Goal added.");
+      fetchGoals();
+    }
   };
 
   const deleteGoal = async (id: string) => {
     const { error } = await supabase.from("goals").delete().eq("id", id);
-    if (!error) fetchGoals();
+    if (error) {
+      showToast("error", error.message);
+    } else {
+      showToast("success", "Goal deleted.");
+      fetchGoals();
+    }
   };
 
   const editGoal = async (id: string, updated: Omit<Goal, "id">) => {
@@ -63,7 +75,12 @@ export function useGoals() {
         deadline: updated.deadline,
       })
       .eq("id", id);
-    if (!error) fetchGoals();
+    if (error) {
+      showToast("error", error.message);
+    } else {
+      showToast("success", "Goal updated.");
+      fetchGoals();
+    }
   };
 
   return { goals, addGoal, deleteGoal, editGoal };

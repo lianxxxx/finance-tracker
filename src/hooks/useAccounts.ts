@@ -3,9 +3,11 @@
 import { useState, useEffect } from "react";
 import { Account } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
+import { useToast } from "@/context/ToastContext";
 
 export function useAccounts() {
   const [accounts, setAccounts] = useState<Account[]>([]);
+  const { showToast } = useToast();
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/immutability
@@ -38,12 +40,22 @@ export function useAccounts() {
       ...a,
       user_id: user?.id,
     });
-    if (!error) fetchAccounts();
+    if (error) {
+      showToast("error", error.message);
+    } else {
+      showToast("success", "Account added.");
+      fetchAccounts();
+    }
   };
 
   const deleteAccount = async (id: string) => {
     const { error } = await supabase.from("accounts").delete().eq("id", id);
-    if (!error) fetchAccounts();
+    if (error) {
+      showToast("error", error.message);
+    } else {
+      showToast("success", "Account deleted.");
+      fetchAccounts();
+    }
   };
 
   const editAccount = async (id: string, updated: Omit<Account, "id">) => {
@@ -51,7 +63,12 @@ export function useAccounts() {
       .from("accounts")
       .update(updated)
       .eq("id", id);
-    if (!error) fetchAccounts();
+    if (error) {
+      showToast("error", error.message);
+    } else {
+      showToast("success", "Account updated.");
+      fetchAccounts();
+    }
   };
 
   return { accounts, addAccount, deleteAccount, editAccount };
