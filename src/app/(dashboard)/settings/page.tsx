@@ -7,6 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import ConfirmLogoutModal from "@/components/modals/ConfirmLogoutModal";
+import { useToast } from "@/context/ToastContext";
 import {
   TbUser,
   TbMoon,
@@ -23,6 +24,7 @@ export default function SettingsPage() {
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const { user } = useAuth();
   const router = useRouter();
+  const { showToast } = useToast();
 
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), []);
@@ -37,6 +39,7 @@ export default function SettingsPage() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
+    showToast("success", "You've been logged out.");
     router.push("/login");
   };
   return (

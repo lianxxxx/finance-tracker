@@ -15,6 +15,7 @@ import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { TbLogout } from "react-icons/tb";
 import ConfirmLogoutModal from "@/components/modals/ConfirmLogoutModal";
+import { useToast } from "@/context/ToastContext";
 interface Props {
   user: User;
 }
@@ -37,10 +38,12 @@ export default function DesktopSidebar({ user }: Props) {
   }
 
   const router = useRouter();
+  const { showToast } = useToast();
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
+    showToast("success", "You've been logged out.");
     router.push("/login");
   };
 

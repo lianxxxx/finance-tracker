@@ -5,11 +5,12 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { TbEye, TbEyeOff } from "react-icons/tb";
+import { useToast } from "@/context/ToastContext";
 
 export default function LoginPage() {
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { showToast } = useToast();
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -18,14 +19,14 @@ export default function LoginPage() {
 
   const handleSubmit = async () => {
     setLoading(true);
-    setError("");
     const { error } = await supabase.auth.signInWithPassword({
       email: form.email,
       password: form.password,
     });
     if (error) {
-      setError(error.message);
+      showToast("error", error.message);
     } else {
+      showToast("success", "Welcome back!");
       router.push("/dashboard");
     }
     setLoading(false);
@@ -101,7 +102,6 @@ export default function LoginPage() {
             </button>
           </div>
 
-          {error && <p className="text-xs text-red-400 -mt-2">{error}</p>}
           <button
             onClick={handleSubmit}
             disabled={loading}

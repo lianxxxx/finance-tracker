@@ -1,20 +1,14 @@
 "use client";
 
+import { DeleteConfirm } from "@/lib/types";
 import { TbTrash, TbX } from "react-icons/tb";
-
-interface Props {
-  title: string;
-  description: string;
-  onClose: () => void;
-  onConfirm: () => void;
-}
 
 export default function ConfirmDeleteModal({
   title,
   description,
   onClose,
   onConfirm,
-}: Props) {
+}: DeleteConfirm) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />

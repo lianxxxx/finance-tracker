@@ -55,3 +55,9 @@ export interface DeleteConfirm {
   onClose: () => void;
   onConfirm: () => void;
 }
+
+export interface Toast {
+  id: string;
+  type: "success" | "error";
+  message: string;
+}

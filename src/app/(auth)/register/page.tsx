@@ -5,11 +5,12 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { TbEye, TbEyeOff } from "react-icons/tb";
+import { useToast } from "@/context/ToastContext";
 
 export default function RegisterPage() {
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { showToast } = useToast();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -21,11 +22,10 @@ export default function RegisterPage() {
 
   const handleSubmit = async () => {
     if (form.password !== form.confirmPassword) {
-      setError("Passwords do not match!");
+      showToast("error", "Passwords do not match.");
       return;
     }
     setLoading(true);
-    setError("");
     const { error } = await supabase.auth.signUp({
       email: form.email,
       password: form.password,
@@ -34,8 +34,9 @@ export default function RegisterPage() {
       },
     });
     if (error) {
-      setError(error.message);
+      showToast("error", error.message);
     } else {
+      showToast("success", "Account created! Welcome to Trackr.");
       router.push("/dashboard");
     }
     setLoading(false);
@@ -162,7 +163,6 @@ export default function RegisterPage() {
               {showConfirm ? <TbEyeOff size={18} /> : <TbEye size={18} />}
             </button>
           </div>
-          {error && <p className="text-xs text-red-400 -mt-2">{error}</p>}
           <button
             onClick={handleSubmit}
             disabled={loading}
