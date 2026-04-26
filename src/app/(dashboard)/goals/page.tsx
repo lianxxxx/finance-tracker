@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useGoals } from "@/hooks/useGoals";
 import { Goal } from "@/lib/types";
 import AddGoalModal from "@/components/modals/AddGoalModal";
+import ConfirmDeleteModal from "@/components/modals/ConfirmDeleteModal";
 import ActionMenu from "@/components/ui/ActionMenu";
 import React from "react";
 import {
@@ -42,6 +43,7 @@ const progressColor: Record<string, string> = {
 export default function GoalsPage() {
   const [showModal, setShowModal] = useState(false);
   const [editTarget, setEditTarget] = useState<Goal | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
   const { goals, addGoal, deleteGoal, editGoal } = useGoals();
 
   return (
@@ -128,7 +130,7 @@ export default function GoalsPage() {
                         setEditTarget(goal);
                         setShowModal(true);
                       }}
-                      onDelete={() => deleteGoal(goal.id)}
+                      onDelete={() => setDeleteTarget({ id: goal.id, name: goal.title })}
                     />
                   </div>
                 </div>
@@ -178,6 +180,18 @@ export default function GoalsPage() {
             setEditTarget(null);
           }}
           editData={editTarget}
+        />
+      )}
+
+      {deleteTarget && (
+        <ConfirmDeleteModal
+          title="Delete Goal"
+          description={`"${deleteTarget.name}" will be permanently removed.`}
+          onClose={() => setDeleteTarget(null)}
+          onConfirm={() => {
+            deleteGoal(deleteTarget.id);
+            setDeleteTarget(null);
+          }}
         />
       )}
     </div>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Transaction } from "@/lib/types";
 import { useTransactions } from "@/hooks/useTransactions";
 import AddTransactionModal from "@/components/modals/AddTransactionModal";
+import ConfirmDeleteModal from "@/components/modals/ConfirmDeleteModal";
 import ActionMenu from "@/components/ui/ActionMenu";
 import React from "react";
 import {
@@ -46,6 +47,7 @@ const categoryColor: Record<string, string> = {
 export default function TransactionsPage() {
   const [showModal, setShowModal] = useState(false);
   const [editTarget, setEditTarget] = useState<Transaction | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
   const {
     transactions,
     totalCount,
@@ -180,7 +182,7 @@ export default function TransactionsPage() {
                           setEditTarget(t);
                           setShowModal(true);
                         }}
-                        onDelete={() => deleteTransaction(t.id)}
+                        onDelete={() => setDeleteTarget({ id: t.id, name: t.title })}
                       />
                     </div>
                   </div>
@@ -237,6 +239,18 @@ export default function TransactionsPage() {
             setEditTarget(null);
           }}
           editData={editTarget}
+        />
+      )}
+
+      {deleteTarget && (
+        <ConfirmDeleteModal
+          title="Delete Transaction"
+          description={`"${deleteTarget.name}" will be permanently removed.`}
+          onClose={() => setDeleteTarget(null)}
+          onConfirm={() => {
+            deleteTransaction(deleteTarget.id);
+            setDeleteTarget(null);
+          }}
         />
       )}
     </div>

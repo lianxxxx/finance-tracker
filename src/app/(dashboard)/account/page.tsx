@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Account } from "@/lib/types";
 import { useAccounts } from "@/hooks/useAccounts";
 import AddAccountModal from "@/components/modals/AddAccountModal";
+import ConfirmDeleteModal from "@/components/modals/ConfirmDeleteModal";
 import ActionMenu from "@/components/ui/ActionMenu";
 import { TbBuildingBank, TbCreditCard, TbCash, TbPlus } from "react-icons/tb";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
@@ -34,6 +35,7 @@ export default function AccountPage() {
   const { accounts, addAccount, deleteAccount, editAccount } = useAccounts();
   const [showModal, setShowModal] = useState(false);
   const [editTarget, setEditTarget] = useState<Account | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
   const totalBalance = accounts.reduce((sum, a) => sum + a.balance, 0);
 
   return (
@@ -117,7 +119,7 @@ export default function AccountPage() {
                     setEditTarget(account);
                     setShowModal(true);
                   }}
-                  onDelete={() => deleteAccount(account.id)}
+                  onDelete={() => setDeleteTarget({ id: account.id, name: account.name })}
                 />
               </div>
             </div>
@@ -140,6 +142,18 @@ export default function AccountPage() {
             setEditTarget(null);
           }}
           editData={editTarget}
+        />
+      )}
+
+      {deleteTarget && (
+        <ConfirmDeleteModal
+          title="Delete Account"
+          description={`"${deleteTarget.name}" and all its data will be permanently removed.`}
+          onClose={() => setDeleteTarget(null)}
+          onConfirm={() => {
+            deleteAccount(deleteTarget.id);
+            setDeleteTarget(null);
+          }}
         />
       )}
     </div>
