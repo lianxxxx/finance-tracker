@@ -1,22 +1,25 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Transaction } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
 
+const PAGE_SIZE = 10;
+
 export function useTransactions() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [page, setPage] = useState(1);
 
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/immutability
-    fetchTransactions();
-  }, []);
+  const fetchTransactions = useCallback(async (currentPage: number) => {
+    const from = (currentPage - 1) * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
 
-  const fetchTransactions = async () => {
-    const { data, error } = await supabase
+    const { data, error, count } = await supabase
       .from("transactions")
-      .select("*")
-      .order("date", { ascending: false });
+      .select("*", { count: "exact" })
+      .order("date", { ascending: false })
+      .range(from, to);
 
     if (!error && data) {
       setTransactions(
@@ -30,8 +33,13 @@ export function useTransactions() {
           note: t.note,
         })),
       );
+      setTotalCount(count ?? 0);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchTransactions(page);
+  }, [page, fetchTransactions]);
 
   const addTransaction = async (t: Omit<Transaction, "id">) => {
     const {
@@ -41,12 +49,12 @@ export function useTransactions() {
       ...t,
       user_id: user?.id,
     });
-    if (!error) fetchTransactions();
+    if (!error) fetchTransactions(page);
   };
 
   const deleteTransaction = async (id: string) => {
     const { error } = await supabase.from("transactions").delete().eq("id", id);
-    if (!error) fetchTransactions();
+    if (!error) fetchTransactions(page);
   };
 
   const editTransaction = async (
@@ -57,8 +65,16 @@ export function useTransactions() {
       .from("transactions")
       .update(updated)
       .eq("id", id);
-    if (!error) fetchTransactions();
+    if (!error) fetchTransactions(page);
   };
 
-  return { transactions, addTransaction, deleteTransaction, editTransaction };
+  return {
+    transactions,
+    totalCount,
+    page,
+    setPage,
+    addTransaction,
+    deleteTransaction,
+    editTransaction,
+  };
 }
