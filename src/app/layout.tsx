@@ -45,9 +45,7 @@ export default function RootLayout({
           defaultTheme="light"
           enableSystem={false}
         >
-          <ToastProvider>
-            {children}
-          </ToastProvider>
+          <ToastProvider>{children}</ToastProvider>
         </ThemeProvider>
       </body>
     </html>

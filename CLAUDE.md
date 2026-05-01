@@ -62,5 +62,3 @@ NEXT_PUBLIC_SUPABASE_URL
 NEXT_PUBLIC_SUPABASE_ANON_KEY
 NEXT_PUBLIC_OPENROUTER_API_KEY
 ```
-
-`src/lib/mockData.ts` contains fallback mock data used when Supabase is unavailable or for demo purposes.

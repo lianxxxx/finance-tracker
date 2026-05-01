@@ -39,11 +39,7 @@ function ToastItem({
             : "bg-red-50 dark:bg-red-500/10 text-red-500"
         }`}
       >
-        {isSuccess ? (
-          <TbCircleCheck size={16} />
-        ) : (
-          <TbAlertCircle size={16} />
-        )}
+        {isSuccess ? <TbCircleCheck size={16} /> : <TbAlertCircle size={16} />}
       </div>
       <p className="flex-1 text-sm font-medium text-slate-700 dark:text-slate-200 leading-snug">
         {toast.message}
@@ -71,7 +67,7 @@ export default function ToastContainer({
   if (toasts.length === 0) return null;
 
   return (
-    <div className="fixed top-4 right-4 md:top-6 md:right-6 z-[60] flex flex-col gap-2 items-end pointer-events-none">
+    <div className="fixed top-4 right-4 md:top-6 md:right-6 z-60 flex flex-col gap-2 items-end pointer-events-none">
       {toasts.map((toast) => (
         <div key={toast.id} className="pointer-events-auto">
           <ToastItem toast={toast} onDismiss={() => onDismiss(toast.id)} />
