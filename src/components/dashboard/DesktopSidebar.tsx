@@ -11,11 +11,16 @@ import {
 } from "react-icons/tb";
 import { navItems } from "@/lib/navItems";
 import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { TbLogout } from "react-icons/tb";
-import ConfirmLogoutModal from "@/components/modals/ConfirmLogoutModal";
 import { useToast } from "@/context/ToastContext";
+
+const ConfirmLogoutModal = dynamic(
+  () => import("@/components/modals/ConfirmLogoutModal"),
+  { ssr: false },
+);
 interface Props {
   user: User;
 }

@@ -6,9 +6,14 @@ import { TbLogout } from "react-icons/tb";
 import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import ConfirmLogoutModal from "@/components/modals/ConfirmLogoutModal";
+import dynamic from "next/dynamic";
 import { useToast } from "@/context/ToastContext";
 import SettingsSkeleton from "@/components/skeletons/SettingsSkeleton";
+
+const ConfirmLogoutModal = dynamic(
+  () => import("@/components/modals/ConfirmLogoutModal"),
+  { ssr: false },
+);
 import {
   TbUser,
   TbMoon,

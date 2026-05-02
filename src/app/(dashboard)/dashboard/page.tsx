@@ -1,12 +1,31 @@
 "use client";
 
+import dynamic from "next/dynamic";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import { useAuth } from "@/hooks/useAuth";
 import { useTransactions } from "@/hooks/useTransactions";
 import StatsCards from "@/components/dashboard/StatsCards";
-import IncomeExpenseChart from "@/components/dashboard/IncomeExpenseChart";
-import SpendingBreakdown from "@/components/dashboard/SpendingBreakdown";
 import RecentTransactions from "@/components/dashboard/RecentTransactions";
 import DashboardSkeleton from "@/components/skeletons/DashboardSkeleton";
+
+const ChartCardSkeleton = () => (
+  <div className="w-full bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
+    <div className="mb-6">
+      <Skeleton height={16} width={160} />
+    </div>
+    <Skeleton height={250} />
+  </div>
+);
+
+const IncomeExpenseChart = dynamic(
+  () => import("@/components/dashboard/IncomeExpenseChart"),
+  { ssr: false, loading: () => <ChartCardSkeleton /> },
+);
+const SpendingBreakdown = dynamic(
+  () => import("@/components/dashboard/SpendingBreakdown"),
+  { ssr: false, loading: () => <ChartCardSkeleton /> },
+);
 
 export default function DashboardPage() {
   const { user } = useAuth();

@@ -1,11 +1,19 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { useGoals } from "@/hooks/useGoals";
 import { Goal } from "@/lib/types";
-import AddGoalModal from "@/components/modals/AddGoalModal";
-import ConfirmDeleteModal from "@/components/modals/ConfirmDeleteModal";
 import GoalsSkeleton from "@/components/skeletons/GoalsSkeleton";
+
+const AddGoalModal = dynamic(
+  () => import("@/components/modals/AddGoalModal"),
+  { ssr: false },
+);
+const ConfirmDeleteModal = dynamic(
+  () => import("@/components/modals/ConfirmDeleteModal"),
+  { ssr: false },
+);
 import ActionMenu from "@/components/ui/ActionMenu";
 import React from "react";
 import {

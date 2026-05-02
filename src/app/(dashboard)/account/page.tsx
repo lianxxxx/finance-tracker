@@ -1,11 +1,19 @@
 "use client";
 
 import React, { useState } from "react";
+import dynamic from "next/dynamic";
 import { Account } from "@/lib/types";
 import { useAccounts } from "@/hooks/useAccounts";
-import AddAccountModal from "@/components/modals/AddAccountModal";
-import ConfirmDeleteModal from "@/components/modals/ConfirmDeleteModal";
 import AccountsSkeleton from "@/components/skeletons/AccountsSkeleton";
+
+const AddAccountModal = dynamic(
+  () => import("@/components/modals/AddAccountModal"),
+  { ssr: false },
+);
+const ConfirmDeleteModal = dynamic(
+  () => import("@/components/modals/ConfirmDeleteModal"),
+  { ssr: false },
+);
 import ActionMenu from "@/components/ui/ActionMenu";
 import { TbBuildingBank, TbCreditCard, TbCash, TbPlus } from "react-icons/tb";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";

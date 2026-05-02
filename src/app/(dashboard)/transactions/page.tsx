@@ -1,11 +1,19 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { Transaction } from "@/lib/types";
 import { useTransactions } from "@/hooks/useTransactions";
-import AddTransactionModal from "@/components/modals/AddTransactionModal";
 import TransactionsSkeleton from "@/components/skeletons/TransactionsSkeleton";
-import ConfirmDeleteModal from "@/components/modals/ConfirmDeleteModal";
+
+const AddTransactionModal = dynamic(
+  () => import("@/components/modals/AddTransactionModal"),
+  { ssr: false },
+);
+const ConfirmDeleteModal = dynamic(
+  () => import("@/components/modals/ConfirmDeleteModal"),
+  { ssr: false },
+);
 import ActionMenu from "@/components/ui/ActionMenu";
 import React from "react";
 import {
