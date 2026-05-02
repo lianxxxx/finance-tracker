@@ -5,7 +5,15 @@ import { Goal } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/context/ToastContext";
 
-export function useGoals() {
+export interface UseGoalsResult {
+  goals: Goal[];
+  loading: boolean;
+  addGoal: (g: Omit<Goal, "id">) => Promise<void>;
+  deleteGoal: (id: string) => Promise<void>;
+  editGoal: (id: string, updated: Omit<Goal, "id">) => Promise<void>;
+}
+
+export function useGoals(): UseGoalsResult {
   const [goals, setGoals] = useState<Goal[]>([]);
   const [loading, setLoading] = useState(true);
   const { showToast } = useToast();

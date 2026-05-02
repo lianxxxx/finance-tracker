@@ -7,7 +7,21 @@ import { useToast } from "@/context/ToastContext";
 
 const PAGE_SIZE = 10;
 
-export function useTransactions() {
+export interface UseTransactionsResult {
+  transactions: Transaction[];
+  totalCount: number;
+  page: number;
+  loading: boolean;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  addTransaction: (t: Omit<Transaction, "id">) => Promise<void>;
+  deleteTransaction: (id: string) => Promise<void>;
+  editTransaction: (
+    id: string,
+    updated: Omit<Transaction, "id">,
+  ) => Promise<void>;
+}
+
+export function useTransactions(): UseTransactionsResult {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(1);

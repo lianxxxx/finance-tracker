@@ -37,7 +37,7 @@ export default function AddGoalModal({ onClose, onSubmit, editData }: Props) {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setForm({
       title: editData.title,
-      category: isCustom ? "other" : (editData.category as Goal["category"]),
+      category: isCustom ? "other" : editData.category,
       targetAmount: String(editData.targetAmount),
       currentAmount: String(editData.currentAmount),
       deadline: editData.deadline,
@@ -71,9 +71,8 @@ export default function AddGoalModal({ onClose, onSubmit, editData }: Props) {
     if (Number(form.currentAmount) > Number(form.targetAmount)) return;
     onSubmit({
       title: form.title,
-      category: (form.category === "other"
-        ? customCategory
-        : form.category) as Goal["category"],
+      category:
+        form.category === "other" ? customCategory : form.category,
       targetAmount: Number(form.targetAmount),
       currentAmount: Number(form.currentAmount),
       deadline: form.deadline,
@@ -162,7 +161,7 @@ export default function AddGoalModal({ onClose, onSubmit, editData }: Props) {
               onChange={(e) =>
                 setForm({
                   ...form,
-                  category: e.target.value as Goal["category"],
+                  category: e.target.value,
                 })
               }
               className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 capitalize cursor-pointer"

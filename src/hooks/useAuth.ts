@@ -5,7 +5,12 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { User } from "@supabase/supabase-js";
 
-export function useAuth() {
+export interface UseAuthResult {
+  user: User | null;
+  loading: boolean;
+}
+
+export function useAuth(): UseAuthResult {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();

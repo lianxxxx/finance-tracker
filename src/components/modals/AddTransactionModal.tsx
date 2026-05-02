@@ -54,8 +54,8 @@ export default function AddTransactionModal({
   useEffect(() => {
     if (editData) {
       const isCustom =
-        !expenseCategories.includes(editData.category as Category) &&
-        !incomeCategories.includes(editData.category as Category);
+        !expenseCategories.includes(editData.category) &&
+        !incomeCategories.includes(editData.category);
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setForm({
         title: editData.title,
@@ -98,9 +98,7 @@ export default function AddTransactionModal({
       amount: Number(form.amount),
       type: form.type,
       category:
-        form.category === "Other"
-          ? (customCategory as Category)
-          : form.category,
+        form.category === "Other" ? customCategory : form.category,
       date: form.date,
       note: form.note,
     });
@@ -238,7 +236,7 @@ export default function AddTransactionModal({
             <select
               value={form.category}
               onChange={(e) =>
-                setForm({ ...form, category: e.target.value as Category })
+                setForm({ ...form, category: e.target.value })
               }
               className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-slate-50 focus:outline-none  focus:border-blue-300 cursor-pointer"
             >

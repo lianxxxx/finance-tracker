@@ -5,7 +5,15 @@ import { Account } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/context/ToastContext";
 
-export function useAccounts() {
+export interface UseAccountsResult {
+  accounts: Account[];
+  loading: boolean;
+  addAccount: (a: Omit<Account, "id">) => Promise<void>;
+  deleteAccount: (id: string) => Promise<void>;
+  editAccount: (id: string, updated: Omit<Account, "id">) => Promise<void>;
+}
+
+export function useAccounts(): UseAccountsResult {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [loading, setLoading] = useState(true);
   const { showToast } = useToast();

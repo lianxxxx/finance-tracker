@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Account } from "@/lib/types";
+import { Account, isAccountType } from "@/lib/types";
 import { TbX, TbPencil } from "react-icons/tb";
 import { MdAdd } from "react-icons/md";
 interface Props {
@@ -100,9 +100,10 @@ export default function AddAccountModal({
           </div>
           <select
             value={form.type}
-            onChange={(e) =>
-              setForm({ ...form, type: e.target.value as Account["type"] })
-            }
+            onChange={(e) => {
+              const v = e.target.value;
+              if (isAccountType(v)) setForm({ ...form, type: v });
+            }}
             className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-slate-50 focus:outline-none  focus:border-blue-300 cursor-pointer"
           >
             <option value="bank">Bank Account</option>

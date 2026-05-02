@@ -10,7 +10,8 @@ export type Category =
   | "Salary"
   | "Freelance"
   | "Investment"
-  | "Other";
+  | "Other"
+  | string;
 
 export interface Transaction {
   id: string;
@@ -61,3 +62,6 @@ export interface Toast {
   type: "success" | "error";
   message: string;
 }
+
+export const isAccountType = (v: string): v is Account["type"] =>
+  v === "bank" || v === "ewallet" || v === "cash" || v === "credit";

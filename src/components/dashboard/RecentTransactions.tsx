@@ -75,7 +75,7 @@ export default function RecentTransactions({ transactions }: Props) {
         </div>
       ) : (
         <div className="flex flex-col gap-2">
-          {recent.map((t: Transaction) => (
+          {recent.map((t) => (
             <div
               key={t.id}
               className="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
