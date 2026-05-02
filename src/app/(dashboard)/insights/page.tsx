@@ -199,12 +199,34 @@ function TipList({ tips }: { tips: string[] }) {
 
 // ─── main page ────────────────────────────────────────────────────────────────
 
+const STORAGE_KEY = "trackr.lastInsights";
+
+interface StoredInsights {
+  insights: InsightData;
+  generatedAt: number;
+}
+
 export default function InsightsPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [insights, setInsights] = useState<InsightData | null>(null);
+  const [generatedAt, setGeneratedAt] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [generated, setGenerated] = useState(false);
+
+  useEffect(() => {
+    const stored = sessionStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      try {
+        const parsed: StoredInsights = JSON.parse(stored);
+        setInsights(parsed.insights);
+        setGeneratedAt(parsed.generatedAt);
+        setGenerated(true);
+      } catch {
+        sessionStorage.removeItem(STORAGE_KEY);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -250,8 +272,14 @@ export default function InsightsPage() {
 
       const clean = raw.replace(/```json|```/g, "").trim();
       const parsed: InsightData = JSON.parse(clean);
+      const ts = Date.now();
       setInsights(parsed);
+      setGeneratedAt(ts);
       setGenerated(true);
+      sessionStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ insights: parsed, generatedAt: ts }),
+      );
     } catch {
       setError("Generation failed. Please try again.");
     } finally {
@@ -384,6 +412,18 @@ export default function InsightsPage() {
         <InsightsSkeleton />
       ) : insights ? (
         <div className="space-y-4">
+          {generatedAt && (
+            <p className="text-xs text-slate-400">
+              Last generated:{" "}
+              {new Date(generatedAt).toLocaleString("en-PH", {
+                month: "short",
+                day: "numeric",
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true,
+              })}
+            </p>
+          )}
           {/* Score + summary */}
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5">
             <div className="flex flex-col sm:flex-row items-center gap-6">

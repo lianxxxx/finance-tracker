@@ -107,8 +107,8 @@ export default function AddTransactionModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />
-      <div className="relative bg-white dark:bg-slate-900 rounded-2xl p-6 w-full max-w-md border border-slate-200 dark:border-slate-800 shadow-xl">
-        <div className="flex items-center justify-between mb-6">
+      <div className="relative bg-white dark:bg-slate-900 rounded-2xl w-full max-w-md max-h-[90vh] flex flex-col border border-slate-200 dark:border-slate-800 shadow-xl">
+        <div className="flex items-center justify-between px-6 pt-6 pb-4 shrink-0">
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
@@ -142,6 +142,7 @@ export default function AddTransactionModal({
           </button>
         </div>
 
+        <div className="px-6 overflow-y-auto flex-1 min-h-0">
         <div className="flex bg-slate-100 dark:bg-slate-800 rounded-xl p-1 mb-4">
           <button
             onClick={() =>
@@ -271,7 +272,9 @@ export default function AddTransactionModal({
           </div>
         </div>
 
-        <div className="flex gap-2 mt-4">
+        </div>
+
+        <div className="flex gap-2 px-6 pt-4 pb-6 shrink-0">
           <button
             onClick={handleSubmit}
             className="flex-1 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2.5 rounded-xl transition-colors cursor-pointer"
