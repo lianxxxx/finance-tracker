@@ -1,4 +1,4 @@
-# Trackr 
+# Trackr
 
 A personal finance tracker built with Next.js, TypeScript, and Tailwind CSS that tracks income, expenses, and goals, while providing AI-powered insights using multiple LLMs such as GPT-OSS 120B, LLaMA 3.3 70B, Nemotron 3 Super 120B, Trinity Large, Step 3.5 Flash, GLM 4.5 Air, and Nemotron Nano 9B.
 
@@ -8,13 +8,13 @@ A personal finance tracker built with Next.js, TypeScript, and Tailwind CSS that
 
 ## Features
 
--  **Dashboard** — Overview of balance, income, expenses, and spending breakdown
--  **Transactions** — Log, edit, and delete income/expense entries with categories
--  **Accounts** — Manage multiple accounts (bank, e-wallet, cash, credit)
--  **Goals** — Set financial goals and track progress
--  **AI Insights** — Multi-model AI analysis with smart fallback (GPT-OSS 120B, LLaMA 3.3 70B, and more)
--  **Dark mode** — System-aware theme toggle
--  **Responsive** — Mobile and desktop friendly
+- **Dashboard** — Overview of balance, income, expenses, and spending breakdown
+- **Transactions** — Log, edit, and delete income/expense entries with categories
+- **Accounts** — Manage multiple accounts (bank, e-wallet, cash, credit)
+- **Goals** — Set financial goals and track progress
+- **AI Insights** — Multi-model AI analysis with smart fallback (GPT-OSS 120B, LLaMA 3.3 70B, and more)
+- **Dark mode** — System-aware theme toggle
+- **Responsive** — Mobile and desktop friendly
 
 ---
 
@@ -26,7 +26,7 @@ A personal finance tracker built with Next.js, TypeScript, and Tailwind CSS that
 - **Charts:** Recharts
 - **Icons:** React Icons
 - **AI:** OpenRouter API (multi-model with smart fallback)
-- **Storage:** localStorage (Supabase integration coming soon)
+- **Storage:** Supabase (Postgres + Auth)
 
 ---
 
@@ -50,7 +50,7 @@ src/
 │   ├── modals/               # Add/edit modals
 │   └── ui/                   # Shared UI components
 ├── hooks/                    # Custom React hooks
-└── lib/                      # Types, mock data, utilities
+└── lib/                      # Types, Supabase client, utilities
 ```
 
 ---
@@ -66,8 +66,8 @@ cd finance-tracker
 npm install
 
 # Set up environment variables
-cp .env.example .env.local
-# Add your OpenRouter API key
+cp .env.local.example .env.local
+# Add your OpenRouter API key and Supabase credentials
 
 # Run development server
 npm run dev
@@ -79,16 +79,16 @@ npm run dev
 
 ```env
 NEXT_PUBLIC_OPENROUTER_API_KEY=your_openrouter_api_key
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
-Get your free API key at [openrouter.ai](https://openrouter.ai).
+Get your free OpenRouter key at [openrouter.ai](https://openrouter.ai) and your Supabase credentials from your project settings under API.
 
 ---
 
 ## Roadmap
 
-- [ ] Supabase integration (real database + auth)
 - [ ] Filipino language toggle for AI Insights
-- [ ] Floating label inputs
 
 ---
