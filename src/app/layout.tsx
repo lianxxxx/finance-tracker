@@ -23,10 +23,52 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Trackr",
-  description: "Know where your money actually goes.",
+  metadataBase: new URL("https://trackrph.vercel.app"),
+  title: {
+    default: "Trackr — Personal Finance Tracker",
+    template: "%s | Trackr",
+  },
+  description:
+    "A simple personal finance and expense tracker built for the Philippines. Log transactions, track accounts, set goals, and see where your money actually goes.",
+  applicationName: "Trackr",
+  authors: [{ name: "Trackr" }],
+  creator: "Trackr",
+  keywords: [
+    "personal finance tracker",
+    "expense tracker",
+    "expense tracker Philippines",
+    "budget app",
+    "money tracker",
+    "Trackr",
+  ],
   icons: {
     icon: "/favicon2.webp",
+  },
+  openGraph: {
+    type: "website",
+    siteName: "Trackr",
+    title: "Trackr — Personal Finance Tracker",
+    description: "Know where your money actually goes.",
+    url: "https://trackrph.vercel.app",
+    locale: "en_PH",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Trackr — Personal Finance Tracker",
+    description: "Know where your money actually goes.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: "/",
   },
 };
 
