@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   title: "Trackr",
   description: "Know where your money actually goes.",
   icons: {
-    icon: "/favicon2.png",
+    icon: "/favicon2.webp",
   },
 };
 

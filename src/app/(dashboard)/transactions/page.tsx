@@ -56,7 +56,10 @@ const categoryColor: Record<string, string> = {
 export default function TransactionsPage() {
   const [showModal, setShowModal] = useState(false);
   const [editTarget, setEditTarget] = useState<Transaction | null>(null);
-  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<{
+    id: string;
+    name: string;
+  } | null>(null);
   const {
     transactions,
     totalCount,
@@ -194,7 +197,9 @@ export default function TransactionsPage() {
                           setEditTarget(t);
                           setShowModal(true);
                         }}
-                        onDelete={() => setDeleteTarget({ id: t.id, name: t.title })}
+                        onDelete={() =>
+                          setDeleteTarget({ id: t.id, name: t.title })
+                        }
                       />
                     </div>
                   </div>
@@ -215,7 +220,7 @@ export default function TransactionsPage() {
               <button
                 onClick={() => setPage((p) => p - 1)}
                 disabled={page === 1}
-                className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
               >
                 <TbChevronLeft size={15} />
               </button>
@@ -225,7 +230,7 @@ export default function TransactionsPage() {
               <button
                 onClick={() => setPage((p) => p + 1)}
                 disabled={page === totalPages}
-                className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
               >
                 <TbChevronRight size={15} />
               </button>

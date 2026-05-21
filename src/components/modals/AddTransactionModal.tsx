@@ -97,8 +97,7 @@ export default function AddTransactionModal({
       title: form.title,
       amount: Number(form.amount),
       type: form.type,
-      category:
-        form.category === "Other" ? customCategory : form.category,
+      category: form.category === "Other" ? customCategory : form.category,
       date: form.date,
       note: form.note,
     });
@@ -143,135 +142,132 @@ export default function AddTransactionModal({
         </div>
 
         <div className="px-6 overflow-y-auto flex-1 min-h-0">
-        <div className="flex bg-slate-100 dark:bg-slate-800 rounded-xl p-1 mb-4">
-          <button
-            onClick={() =>
-              setForm({ ...form, type: "expense", category: "Food" })
-            }
-            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer
+          <div className="flex bg-slate-100 dark:bg-slate-800 rounded-xl p-1 mb-4">
+            <button
+              onClick={() =>
+                setForm({ ...form, type: "expense", category: "Food" })
+              }
+              className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer
               ${
                 form.type === "expense"
                   ? "bg-white dark:bg-slate-700 text-red-500 shadow-sm"
                   : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
               }`}
-          >
-            <TbTrendingDown size={15} />
-            Expense
-          </button>
-          <button
-            onClick={() =>
-              setForm({ ...form, type: "income", category: "Salary" })
-            }
-            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer
+            >
+              <TbTrendingDown size={15} />
+              Expense
+            </button>
+            <button
+              onClick={() =>
+                setForm({ ...form, type: "income", category: "Salary" })
+              }
+              className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer
               ${
                 form.type === "income"
                   ? "bg-white dark:bg-slate-700 text-emerald-500 shadow-sm"
                   : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
               }`}
-          >
-            <TbTrendingUp size={15} />
-            Income
-          </button>
-        </div>
+            >
+              <TbTrendingUp size={15} />
+              Income
+            </button>
+          </div>
 
-        <div className="flex flex-col gap-3">
-          <div className="relative">
-            <input
-              type="text"
-              id="title"
-              placeholder="Title"
-              value={form.title}
-              onChange={(e) => setForm({ ...form, title: e.target.value })}
-              className="peer w-full border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 pb-2 text-sm bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 outline-none focus:border-blue-300 transition-colors placeholder-transparent"
-            />
-            <label
-              htmlFor="title"
-              className="absolute left-3 px-1 text-slate-400 bg-white dark:bg-slate-900 transition-all duration-200
-      top-2.5 text-sm
-      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500
-      peer-not-placeholder-shown:-top-2 peer-not-placeholder-shown:text-xs"
-            >
-              Title
-            </label>
-          </div>
-          <div className="relative">
-            <input
-              type="text"
-              id="amount"
-              inputMode="decimal"
-              placeholder="Amount (₱)"
-              value={displayAmount}
-              onChange={handleAmountChange}
-              className="peer w-full border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3  pb-2 text-sm bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 outline-none focus:border-blue-300 transition-colors placeholder-transparent"
-            />
-            <label
-              htmlFor="amount"
-              className="absolute left-3 px-1 text-slate-400 bg-white dark:bg-slate-900 transition-all duration-200
-      top-2.5 text-sm
-      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500
-      peer-not-placeholder-shown:-top-2 peer-not-placeholder-shown:text-xs"
-            >
-              Amount
-            </label>
-          </div>
-          {form.category === "Other" ? (
+          <div className="flex flex-col gap-3">
             <div className="relative">
               <input
                 type="text"
-                placeholder="Type your category"
-                value={customCategory}
-                onChange={(e) => setCustomCategory(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent text-sm text-slate-900 dark:text-slate-50 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-300"
+                id="title"
+                placeholder="Title"
+                value={form.title}
+                onChange={(e) => setForm({ ...form, title: e.target.value })}
+                className="peer w-full border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 pb-2 text-sm bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 outline-none focus:border-blue-300 transition-colors placeholder-transparent"
               />
-              <button
-                onClick={() => {
-                  setForm({ ...form, category: "Food" });
-                  setCustomCategory("");
-                }}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs cursor-pointer"
+              <label
+                htmlFor="title"
+                className="absolute left-3 px-1 text-slate-400 bg-white dark:bg-slate-900 transition-all duration-200
+      top-2.5 text-sm
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500
+      peer-not-placeholder-shown:-top-2 peer-not-placeholder-shown:text-xs"
               >
-                ✕
-              </button>
+                Title
+              </label>
             </div>
-          ) : (
-            <select
-              value={form.category}
-              onChange={(e) =>
-                setForm({ ...form, category: e.target.value })
-              }
+            <div className="relative">
+              <input
+                type="text"
+                id="amount"
+                inputMode="decimal"
+                placeholder="Amount (₱)"
+                value={displayAmount}
+                onChange={handleAmountChange}
+                className="peer w-full border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3  pb-2 text-sm bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 outline-none focus:border-blue-300 transition-colors placeholder-transparent"
+              />
+              <label
+                htmlFor="amount"
+                className="absolute left-3 px-1 text-slate-400 bg-white dark:bg-slate-900 transition-all duration-200
+      top-2.5 text-sm
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500
+      peer-not-placeholder-shown:-top-2 peer-not-placeholder-shown:text-xs"
+              >
+                Amount
+              </label>
+            </div>
+            {form.category === "Other" ? (
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Type your category"
+                  value={customCategory}
+                  onChange={(e) => setCustomCategory(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent text-sm text-slate-900 dark:text-slate-50 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-300"
+                />
+                <button
+                  onClick={() => {
+                    setForm({ ...form, category: "Food" });
+                    setCustomCategory("");
+                  }}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
+            ) : (
+              <select
+                value={form.category}
+                onChange={(e) => setForm({ ...form, category: e.target.value })}
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-slate-50 focus:outline-none  focus:border-blue-300 cursor-pointer"
+              >
+                {(form.type === "income"
+                  ? incomeCategories
+                  : expenseCategories
+                ).map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+            )}
+            <input
+              type="date"
+              value={form.date}
+              onChange={(e) => setForm({ ...form, date: e.target.value })}
               className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-slate-50 focus:outline-none  focus:border-blue-300 cursor-pointer"
-            >
-              {(form.type === "income"
-                ? incomeCategories
-                : expenseCategories
-              ).map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
-          )}
-          <input
-            type="date"
-            value={form.date}
-            onChange={(e) => setForm({ ...form, date: e.target.value })}
-            className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-slate-50 focus:outline-none  focus:border-blue-300 cursor-pointer"
-          />
-          <div className="relative">
-            <TbNotes
-              size={16}
-              className="absolute left-3 top-3 text-slate-400"
             />
-            <textarea
-              placeholder="Note (optional)"
-              value={form.note}
-              onChange={(e) => setForm({ ...form, note: e.target.value })}
-              rows={2}
-              className="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent text-sm text-slate-900 dark:text-slate-50  placeholder:text-slate-400 focus:outline-none  focus:border-blue-300 transition-colors resize-none"
-            />
+            <div className="relative">
+              <TbNotes
+                size={16}
+                className="absolute left-3 top-3 text-slate-400"
+              />
+              <textarea
+                placeholder="Note (optional)"
+                value={form.note}
+                onChange={(e) => setForm({ ...form, note: e.target.value })}
+                rows={2}
+                className="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-transparent text-sm text-slate-900 dark:text-slate-50  placeholder:text-slate-400 focus:outline-none  focus:border-blue-300 transition-colors resize-none"
+              />
+            </div>
           </div>
-        </div>
-
         </div>
 
         <div className="flex gap-2 px-6 pt-4 pb-6 shrink-0">
@@ -283,7 +279,7 @@ export default function AddTransactionModal({
           </button>
           <button
             onClick={onClose}
-            className="flex-1 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 text-sm font-medium py-2.5 rounded-xl transition-colors border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-800 cursor-pointer"
+            className="flex-1  text-slate-800  bg-slate-100 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 text-sm font-medium py-2.5 rounded-xl transition-colors border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-800 cursor-pointer"
           >
             Discard
           </button>
