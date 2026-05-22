@@ -10,9 +10,10 @@ A personal finance tracker built with Next.js, TypeScript, and Tailwind CSS that
 
 - **Dashboard** — Overview of balance, income, expenses, and spending breakdown
 - **Transactions** — Log, edit, and delete income/expense entries with categories
-- **Accounts** — Manage multiple accounts (bank, e-wallet, cash, credit)
+- **Accounts** — Manage multiple accounts (bank, e-wallet, cash, credit) with type filtering
 - **Goals** — Set financial goals and track progress
-- **AI Insights** — Multi-model AI analysis with smart fallback (GPT-OSS 120B, LLaMA 3.3 70B, and more)
+- **AI Insights** — Multi-model AI analysis with smart fallback (GPT-OSS 120B, LLaMA 3.3 70B, and more), with monthly history
+- **Profile** — Editable display name synced across the app
 - **Dark mode** — System-aware theme toggle
 - **Responsive** — Mobile and desktop friendly
 
@@ -32,56 +33,62 @@ A personal finance tracker built with Next.js, TypeScript, and Tailwind CSS that
 
 ## Project Structure
 
-```
+\`\`\`
 src/
 ├── app/
-│   ├── (auth)/               # Login & register pages
-│   ├── (dashboard)/          # Main app pages
-│   │   ├── dashboard/
-│   │   ├── transactions/
-│   │   ├── account/
-│   │   ├── goals/
-│   │   ├── insights/         # AI Insights page
-│   │   └── settings/
-│   └── api/
-│       └── insights/         # OpenRouter API route
+│ ├── (auth)/ # Login & register pages
+│ ├── (dashboard)/ # Main app pages
+│ │ ├── dashboard/
+│ │ ├── transactions/
+│ │ ├── account/
+│ │ ├── goals/
+│ │ ├── insights/ # AI Insights page
+│ │ └── settings/
+│ └── api/
+│ └── insights/ # OpenRouter API route
 ├── components/
-│   ├── dashboard/            # Dashboard components
-│   ├── modals/               # Add/edit modals
-│   └── ui/                   # Shared UI components
-├── hooks/                    # Custom React hooks
-└── lib/                      # Types, Supabase client, utilities
-```
+│ ├── dashboard/ # Dashboard components
+│ ├── modals/ # Add/edit modals
+│ └── ui/ # Shared UI components
+├── hooks/ # Custom React hooks
+└── lib/ # Types, Supabase client, utilities
+\`\`\`
 
 ---
 
 ## Getting Started
 
-```bash
+\`\`\`bash
+
 # Clone the repo
+
 git clone https://github.com/lianxxxx/finance-tracker.git
 cd finance-tracker
 
 # Install dependencies
+
 npm install
 
 # Set up environment variables
+
 cp .env.local.example .env.local
+
 # Add your OpenRouter API key and Supabase credentials
 
 # Run development server
+
 npm run dev
-```
+\`\`\`
 
 ---
 
 ## Environment Variables
 
-```env
+\`\`\`env
 NEXT_PUBLIC_OPENROUTER_API_KEY=your_openrouter_api_key
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
+\`\`\`
 
 Get your free OpenRouter key at [openrouter.ai](https://openrouter.ai) and your Supabase credentials from your project settings under API.
 
