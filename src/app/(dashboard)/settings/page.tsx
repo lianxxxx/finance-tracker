@@ -28,6 +28,9 @@ export default function SettingsPage() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [nameInput, setNameInput] = useState("");
+  const [saving, setSaving] = useState(false);
   const { user } = useAuth();
   const router = useRouter();
   const { showToast } = useToast();
@@ -42,6 +45,34 @@ export default function SettingsPage() {
 
   const name = user?.user_metadata?.name || "User";
   const email = user?.email || "user@example.com";
+
+  const startEdit = () => {
+    setNameInput(name);
+    setEditing(true);
+  };
+
+  const cancelEdit = () => {
+    setEditing(false);
+  };
+
+  const saveName = async () => {
+    const trimmed = nameInput.trim();
+    if (!trimmed) {
+      showToast("error", "Name cannot be empty.");
+      return;
+    }
+    setSaving(true);
+    const { error } = await supabase.auth.updateUser({
+      data: { name: trimmed },
+    });
+    setSaving(false);
+    if (error) {
+      showToast("error", error.message);
+      return;
+    }
+    setEditing(false);
+    showToast("success", "Name updated.");
+  };
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -68,20 +99,60 @@ export default function SettingsPage() {
               Profile
             </p>
           </div>
-          <div className="flex items-center justify-between px-5 py-4">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center text-blue-500">
-                <TbUser size={18} />
+          {editing ? (
+            <div className="flex items-center justify-between gap-3 px-5 py-4">
+              <div className="flex items-center gap-3 flex-1 min-w-0">
+                <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center text-blue-500 shrink-0">
+                  <TbUser size={18} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <input
+                    type="text"
+                    value={nameInput}
+                    onChange={(e) => setNameInput(e.target.value)}
+                    autoFocus
+                    disabled={saving}
+                    className="w-full bg-transparent border-b border-slate-200 dark:border-slate-700 focus:border-blue-400 outline-none text-sm font-medium text-slate-900 dark:text-slate-50 pb-0.5"
+                  />
+                  <p className="text-xs text-slate-400 mt-1">{email}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-medium text-slate-900 dark:text-slate-50">
-                  {name}
-                </p>
-                <p className="text-xs text-slate-400"> {email}</p>
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  onClick={cancelEdit}
+                  disabled={saving}
+                  className="text-xs font-medium text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 px-2 py-1 cursor-pointer disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={saveName}
+                  disabled={saving}
+                  className="text-xs font-medium text-white bg-blue-500 hover:opacity-75 rounded-full px-3 py-1 cursor-pointer disabled:opacity-50 transition-opacity"
+                >
+                  {saving ? "Saving..." : "Save"}
+                </button>
               </div>
             </div>
-            <TbChevronRight size={18} className="text-slate-400" />
-          </div>
+          ) : (
+            <button
+              onClick={startEdit}
+              className="flex items-center justify-between w-full px-5 py-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center text-blue-500">
+                  <TbUser size={18} />
+                </div>
+                <div className="text-left">
+                  <p className="text-sm font-medium text-slate-900 dark:text-slate-50">
+                    {name}
+                  </p>
+                  <p className="text-xs text-slate-400"> {email}</p>
+                </div>
+              </div>
+              <TbChevronRight size={18} className="text-slate-400" />
+            </button>
+          )}
         </div>
 
         {/* Appearance */}
