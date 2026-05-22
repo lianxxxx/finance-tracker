@@ -60,5 +60,5 @@ Core types are in `src/lib/types.ts`: `Transaction`, `Account`, `Goal`, `Categor
 ```
 NEXT_PUBLIC_SUPABASE_URL
 NEXT_PUBLIC_SUPABASE_ANON_KEY
-NEXT_PUBLIC_OPENROUTER_API_KEY
+OPENROUTER_API_KEY
 ```

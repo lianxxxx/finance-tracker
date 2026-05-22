@@ -12,7 +12,7 @@ const models = [
 export async function POST(request: NextRequest) {
   try {
     const { prompt } = await request.json();
-    const apiKey = process.env.NEXT_PUBLIC_OPENROUTER_API_KEY;
+    const apiKey = process.env.OPENROUTER_API_KEY;
 
     if (!apiKey) {
       return NextResponse.json({ error: "API key missing." }, { status: 500 });
