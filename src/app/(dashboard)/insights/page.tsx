@@ -77,6 +77,12 @@ interface InsightData {
   score: number;
 }
 
+interface HistoryEntry {
+  id: string;
+  created_at: string;
+  data: InsightData;
+}
+
 // ─── sub-components ───────────────────────────────────────────────────────────
 
 function ScoreRing({ score, label }: { score: number; label: string }) {
@@ -213,6 +219,33 @@ export default function InsightsPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [generated, setGenerated] = useState(false);
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [expandedHistoryId, setExpandedHistoryId] = useState<string | null>(
+    null,
+  );
+
+  const fetchHistory = async () => {
+    const now = new Date();
+    const startOfMonth = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      1,
+    ).toISOString();
+    const { data, error } = await supabase
+      .from("insights")
+      .select("*")
+      .gte("created_at", startOfMonth)
+      .order("created_at", { ascending: false });
+    if (error) {
+      console.error("Failed to fetch insights history:", error);
+      return;
+    }
+    setHistory((data ?? []) as HistoryEntry[]);
+  };
+
+  useEffect(() => {
+    fetchHistory();
+  }, []);
 
   useEffect(() => {
     const stored = sessionStorage.getItem(STORAGE_KEY);
@@ -280,6 +313,23 @@ export default function InsightsPage() {
         STORAGE_KEY,
         JSON.stringify({ insights: parsed, generatedAt: ts }),
       );
+
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        const { error: insertError } = await supabase.from("insights").insert({
+          user_id: user?.id,
+          data: parsed,
+        });
+        if (insertError) {
+          console.error("Failed to save insight to history:", insertError);
+        } else {
+          fetchHistory();
+        }
+      } catch (err) {
+        console.error("Failed to save insight to history:", err);
+      }
     } catch {
       setError("Generation failed. Please try again.");
     } finally {
@@ -513,6 +563,112 @@ export default function InsightsPage() {
           </div>
         </div>
       ) : null}
+
+      {/* History */}
+      <div className="space-y-4">
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+          This Month&apos;s History
+        </h2>
+        {history.length === 0 ? (
+          <p className="text-sm text-slate-400">
+            No insights generated this month yet.
+          </p>
+        ) : (
+          <div className="space-y-3">
+            {history.map((entry) => {
+              const isOpen = expandedHistoryId === entry.id;
+              const created = new Date(entry.created_at);
+              const dateLabel = created.toLocaleString("en-PH", {
+                month: "short",
+                day: "numeric",
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true,
+              });
+              const scoreColor =
+                entry.data.score >= 80
+                  ? "text-emerald-500"
+                  : entry.data.score >= 60
+                    ? "text-blue-500"
+                    : entry.data.score >= 40
+                      ? "text-amber-500"
+                      : "text-red-400";
+              return (
+                <div
+                  key={entry.id}
+                  className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden"
+                >
+                  <button
+                    onClick={() =>
+                      setExpandedHistoryId(isOpen ? null : entry.id)
+                    }
+                    className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div
+                        className={`text-2xl font-bold shrink-0 ${scoreColor}`}
+                      >
+                        {entry.data.score}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+                          {entry.data.scoreLabel}
+                        </p>
+                        <p className="text-xs text-slate-400">{dateLabel}</p>
+                      </div>
+                    </div>
+                    {isOpen ? (
+                      <TbChevronUp className="w-4 h-4 text-slate-400 shrink-0" />
+                    ) : (
+                      <TbChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
+                    )}
+                  </button>
+                  {isOpen && (
+                    <div className="px-5 pb-5 pt-4 border-t border-slate-100 dark:border-slate-800 space-y-4">
+                      <div>
+                        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+                          Overview
+                        </p>
+                        <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                          {entry.data.summary}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+                          Spending Pattern
+                        </p>
+                        <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                          {entry.data.spendingPattern}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+                          Month-over-Month
+                        </p>
+                        <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                          {entry.data.monthOverMonth}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+                          Budget Recommendations
+                        </p>
+                        <TipList tips={entry.data.budgetRecommendations} />
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+                          Savings Tips
+                        </p>
+                        <TipList tips={entry.data.savingsTips} />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
