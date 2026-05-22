@@ -3,6 +3,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useState, useEffect } from "react";
 import DesktopSidebar from "@/components/dashboard/DesktopSidebar";
 import MobileNav from "@/components/dashboard/MobileNav";
+import TrackrLoader from "@/components/ui/TrackrLoader";
 
 export default function DashboardLayout({
   children,
@@ -26,12 +27,7 @@ export default function DashboardLayout({
   }, []);
 
   const { user, loading } = useAuth();
-  if (loading)
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">
-        <p className="text-sm text-slate-400">Loading...</p>
-      </div>
-    );
+  if (loading) return <TrackrLoader />;
 
   if (!user) return null;
   return (
