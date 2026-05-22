@@ -40,12 +40,22 @@ const typeLabel: Record<string, string> = {
   credit: "Credit Card",
 };
 
+const filterLabel: Record<Account["type"], string> = {
+  bank: "Bank",
+  ewallet: "E-Wallet",
+  cash: "Cash",
+  credit: "Credit",
+};
+
 export default function AccountPage() {
   const { accounts, loading, addAccount, deleteAccount, editAccount } = useAccounts();
   const [showModal, setShowModal] = useState(false);
   const [editTarget, setEditTarget] = useState<Account | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
+  const [filter, setFilter] = useState<"all" | Account["type"]>("all");
   const totalBalance = accounts.reduce((sum, a) => sum + a.balance, 0);
+  const filteredAccounts =
+    filter === "all" ? accounts : accounts.filter((a) => a.type === filter);
 
   if (loading) return <AccountsSkeleton />;
 
@@ -82,6 +92,27 @@ export default function AccountPage() {
         </p>
       </div>
 
+      {/* Filter pills */}
+      <div className="flex flex-wrap items-center gap-2 mb-4">
+        {(["all", "bank", "ewallet", "cash", "credit"] as const).map((key) => {
+          const active = filter === key;
+          const label = key === "all" ? "All" : filterLabel[key];
+          return (
+            <button
+              key={key}
+              onClick={() => setFilter(key)}
+              className={`text-xs font-medium px-3 py-1.5 rounded-full cursor-pointer transition-colors ${
+                active
+                  ? "bg-blue-500 text-white"
+                  : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50"
+              }`}
+            >
+              {label}
+            </button>
+          );
+        })}
+      </div>
+
       {/* Accounts Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {accounts.length === 0 ? (
@@ -97,8 +128,18 @@ export default function AccountPage() {
               Click Add Account to get started
             </p>
           </div>
+        ) : filteredAccounts.length === 0 ? (
+          <div className="col-span-full flex flex-col items-center justify-center py-10 gap-2">
+            <VscEmptyWindow
+              size={32}
+              className="text-slate-300 dark:text-slate-600"
+            />
+            <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
+              No {filterLabel[filter as Account["type"]]} accounts yet
+            </p>
+          </div>
         ) : (
-          accounts.map((account) => (
+          filteredAccounts.map((account) => (
             <div
               key={account.id}
               className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3"
@@ -137,6 +178,11 @@ export default function AccountPage() {
           ))
         )}
       </div>
+      {accounts.length > 0 && (
+        <p className="text-xs text-slate-400 mt-3">
+          Showing {filteredAccounts.length} of {accounts.length} accounts
+        </p>
+      )}
       {showModal && (
         <AddAccountModal
           onClose={() => {
