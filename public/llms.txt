@@ -1,0 +1,25 @@
+# Trackr
+
+> Trackr is a free personal finance and expense tracker built for the Philippines. It helps people log income and expenses, manage accounts, set savings goals, and get AI-powered insights on their spending — with no subscriptions, no ads, and no data selling.
+
+Trackr is a web application built by Leyanne Mayo (https://leyannemayo.vercel.app). It requires a free account to use.
+
+## Features
+
+- Income and expense tracking: log transactions in seconds, categorized (Food, Transport, Shopping, Bills, Health, Entertainment, Salary, Freelance, Investment) and searchable
+- Accounts: track balances across multiple accounts
+- Goals: set savings goals and monitor progress
+- Charts: visualize spending patterns and income vs. expenses
+- AI Insights: AI-generated analysis and recommendations based on your monthly finances
+
+## Pages
+
+- [Home](https://trackrph.vercel.app/): landing page with feature overview
+- [Login](https://trackrph.vercel.app/login): sign in to an existing account
+- [Register](https://trackrph.vercel.app/register): create a free account
+
+## Notes
+
+- Free to use, no ads, no data selling
+- Currency shown in Philippine Peso (PHP)
+- The dashboard and finance data are private and require authentication

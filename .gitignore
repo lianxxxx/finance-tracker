@@ -41,5 +41,6 @@ yarn-error.log*
 next-env.d.ts
 
 *.txt
+!public/llms.txt
 .env.local
 !.env.local.example
