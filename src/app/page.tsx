@@ -10,11 +10,9 @@ import { useEffect, useState } from "react";
 import { MdOutlineWbSunny } from "react-icons/md";
 import { IoMoonOutline } from "react-icons/io5";
 import { IoArrowForward } from "react-icons/io5";
-import {
-  IoWalletOutline,
-  IoStatsChartOutline,
-  IoSparklesOutline,
-} from "react-icons/io5";
+import { IoWalletOutline } from "react-icons/io5";
+import { FaChartSimple } from "react-icons/fa6";
+import { PiLightbulbLight } from "react-icons/pi";
 export default function Home() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -210,19 +208,16 @@ export default function Home() {
         {[
           {
             icon: IoWalletOutline,
-            tint: "bg-blue-50 text-blue-500 dark:bg-blue-500/10 dark:text-blue-400",
             title: "Track every peso",
             desc: "Log income and expenses in seconds. Categorized, searchable, always in sync.",
           },
           {
-            icon: IoStatsChartOutline,
-            tint: "bg-emerald-50 text-emerald-500 dark:bg-emerald-500/10 dark:text-emerald-400",
+            icon: FaChartSimple,
             title: "Visualize patterns",
             desc: "Charts that make your spending habits impossible to ignore.",
           },
           {
-            icon: IoSparklesOutline,
-            tint: "bg-amber-50 text-amber-500 dark:bg-amber-500/10 dark:text-amber-400",
+            icon: PiLightbulbLight,
             title: "AI-Powered Insights",
             desc: "Let AI analyze your finances and give you recommendations.",
           },
@@ -231,10 +226,8 @@ export default function Home() {
             key={f.title}
             className="rounded-xl border border-slate-100 dark:border-slate-800 p-6"
           >
-            <span
-              className={`inline-flex items-center justify-center w-9 h-9 rounded-lg mb-5 ${f.tint}`}
-            >
-              <f.icon size={17} />
+            <span className="inline-flex mb-5 text-blue-500">
+              <f.icon size={20} />
             </span>
             <p className="text-sm font-semibold text-[#0f0f0f] dark:text-slate-50 mb-1.5">
               {f.title}
